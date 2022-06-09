@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <form action="{{url_for('auth.register')}}" method="post" novalidate>
+        {{ form.csrf_token }}
+        {{ form.username.label }} <br>
+        {{ form.username }}
+        {% if form.username.errors %}
+        <span>{{ form.username.errors[0] }}</span>
+        {% endif %}
+        <br>
+        {{ form.password.label }} <br>
+        {{ form.password }}
+        {% if form.password.errors %}
+        <span>{{ form.password.errors[0] }}</span>
+        {% endif %}
+        <br>
+        {{ form.confirm_password.label }} <br>
+        {{ form.confirm_password }}
+        {% if form.confirm_password.errors %}
+        <span>{{ form.confirm_password.errors[0] }}</span>
+        {% endif %}
+        <br>
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>
