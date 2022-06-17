@@ -34,14 +34,14 @@ def register():
 
         return redirect(url_for('auth.login'))
     # GET
-    return render_template('auth/register.j2', form=form)
+    return render_template('auth/register.html', form=form)
 
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     # GET
     if request.method == 'GET':
-        return render_template('auth/login.j2')
+        return render_template('auth/login.html')
     # POST
     username = request.form.get('username')
     password = request.form.get('password')

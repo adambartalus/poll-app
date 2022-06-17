@@ -13,7 +13,8 @@
         <ul>
         {% for answer in answers %}
             <li>
-                <input type="radio" name="choice" value="{{ answer['id'] }}"> {{ answer['text'] }} {{ answer['count'] }}
+                <input type="radio" name="choice" value="{{ answer['id'] }}">
+                {{ answer['text'] }} {{ answer['count'] }}
             </li>
         {% endfor %}
         </ul>

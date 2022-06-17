@@ -15,7 +15,7 @@
     <form action="{{ url_for('poll.poll') }}" method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="question">Question:</label>
-        <input type="text" name="question">
+        <input type="text" name="question" id="question">
         <br>
         Answer options: <br>
         <ul id="answer_options">

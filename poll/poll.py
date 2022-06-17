@@ -38,13 +38,14 @@ def get_poll(id_):
         [id_]
     ).fetchall()
     answers = map(lambda x: {'id': x['id'], 'text': x['body'], 'count': get_vote_count(x['id'])}, answers)
-    return render_template('poll.j2', poll_id=id_, question=question, answers=answers)
+    return render_template('poll.html', poll_id=id_, question=question, answers=answers)
 
 
 @bp.route('/poll', methods=['POST'])
 def poll():
     question = request.form.get('question')
     answers = request.form.getlist('answer')
+    answers = filter(lambda x: x.strip(), answers)
     db = get_db()
     db.execute(
         'INSERT INTO poll DEFAULT VALUES'
@@ -69,4 +70,4 @@ def poll():
         )
     db.commit()
 
-    return render_template('index.jinja2', maxid=max_id)
+    return redirect(url_for('poll.poll') + f'/{max_id}')

@@ -1,9 +1,10 @@
 import os
 from flask import Flask
 from flask_login import LoginManager
+from flask_wtf.csrf import CSRFProtect
+
 from poll.db import get_db
 from poll.models import User
-from flask_wtf.csrf import CSRFProtect
 
 
 def create_app():
