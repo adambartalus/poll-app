@@ -13,7 +13,9 @@ def create_app():
     app.config.from_mapping(
         SECRET_KEY='dev',
         WTF_CSRF_SECRET_KEY='dev2',
-        DATABASE=os.path.join(app.instance_path, 'poll.sqlite'),
+        # DATABASE=os.path.join(app.instance_path, 'poll.sqlite'),
+        SQLALCHEMY_DATABASE_URI='sqlite:///' + app.instance_path + '/poll.sqlite',
+        SQLALCHEMY_TRACK_MODIFICATIONS=False
     )
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -22,17 +24,15 @@ def create_app():
     csrf = CSRFProtect()
     csrf.init_app(app)
 
+    from .model import db
+    db.init_app(app)
+
     @login_manager.user_loader
     def load_user(user_id):
-        user_row = get_db().execute(
-            'SELECT *'
-            ' FROM user'
-            ' WHERE id=?',
-            [user_id]
-        ).fetchone()
-        if user_row is None:
+        user = User.query.get(user_id)
+        if user is None:
             return None
-        return User(user_row['id'], user_row['username'], user_row['password'])
+        return user
 
     try:
         os.makedirs(app.instance_path)

@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template, request, url_for
 from werkzeug.utils import redirect
 
-from poll.db import get_db
 from poll.utils import poll_exists
 from poll.utils import get_vote_count
+
+from poll.model import db
+from poll.models import PollVote, PollQuestion, PollOption, Poll
 
 bp = Blueprint('poll', __name__)
 
@@ -11,63 +13,47 @@ bp = Blueprint('poll', __name__)
 @bp.route('/poll/<int:id_>', methods=['GET', 'POST'])
 def get_poll(id_):
     if request.method == 'POST':
-        choice = request.form.get('choice')
-        if choice:
-            get_db().execute(
-                'INSERT INTO poll_vote (poll_id, answer_id)'
-                ' VALUES (?, ?)',
-                [id_, choice]
-            )
-            get_db().commit()
+        choices = request.form.getlist('choice')
+        if choices:
+            for choice in choices:
+                db.session.add(PollVote(poll_option_id=choice))
+            db.session.commit()
             return redirect(request.referrer)
     if not poll_exists(id_):
         return redirect(url_for('main.index'))
 
-    db = get_db()
-    question = db.execute(
-        'SELECT *'
-        ' FROM poll_question'
-        ' WHERE poll_id=?',
-        [id_]
-    ).fetchone()['body']
-    
-    answers = db.execute(
-        'SELECT *'
-        ' FROM poll_answer'
-        ' WHERE poll_id=?',
-        [id_]
-    ).fetchall()
-    answers = map(lambda x: {'id': x['id'], 'text': x['body'], 'count': get_vote_count(x['id'])}, answers)
-    return render_template('poll.html', poll_id=id_, question=question, answers=answers)
+    question = PollQuestion.query.filter_by(poll_id=id_).first().text
+    options = PollOption.query.filter_by(poll_id=id_).all()
+    multiple = Poll.query.get(id_).multiple
+
+    options = map(lambda x: {'id': x.id, 'text': x.text, 'count': get_vote_count(x.id)}, options)
+
+    context = {
+        'poll_id': id_,
+        'question': question,
+        'options': options,
+        'multiple': multiple
+    }
+    return render_template('poll.html', **context)
 
 
 @bp.route('/poll', methods=['POST'])
 def poll():
     question = request.form.get('question')
     answers = request.form.getlist('answer')
-    answers = filter(lambda x: x.strip(), answers)
-    db = get_db()
-    db.execute(
-        'INSERT INTO poll DEFAULT VALUES'
-    )
-    db.commit()
-    max_id = db.execute(
-        'SELECT *'
-        ' FROM poll'
-        ' ORDER BY id DESC'
-        ' LIMIT 1'
-    ).fetchone()['id']
-    db.execute(
-        'INSERT INTO poll_question (poll_id, body)'
-        ' VALUES (?, ?)',
-        (max_id, question)
-    )
-    for answer in answers:
-        db.execute(
-            'INSERT INTO poll_answer (poll_id, body)'
-            ' VALUES (?, ?)',
-            (max_id, answer)
-        )
-    db.commit()
+    multiple = request.form.get('multiple')
 
-    return redirect(url_for('poll.poll') + f'/{max_id}')
+    answers = filter(lambda x: x.strip(), answers)
+
+    new_poll = Poll(multiple=multiple is not None)
+    db.session.add(new_poll)
+    db.session.commit()
+
+    db.session.add(PollQuestion(poll_id=new_poll.id, text=question))
+    db.session.commit()
+
+    for answer in answers:
+        db.session.add(PollOption(poll_id=new_poll.id, text=answer))
+    db.session.commit()
+
+    return redirect(url_for('poll.poll') + f'/{new_poll.id}')
