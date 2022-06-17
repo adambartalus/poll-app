@@ -55,7 +55,7 @@ def login():
     if user_row is None or not check_password_hash(user_row['password'], password):
         return redirect(url_for('auth.login'))
 
-    login_user(User(user_row['id'], user_row['username'], user_row['password']))
+    # login_user(User(user_row['id'], user_row['username'], user_row['password']))
     return redirect(url_for('main.index'))
 
 
