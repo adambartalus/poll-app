@@ -13,8 +13,9 @@ def create_app():
     app.config.from_mapping(
         SECRET_KEY='dev',
         WTF_CSRF_SECRET_KEY='dev2',
-      # DATABASE=os.path.join(app.instance_path, 'poll.sqlite'),
-        SQLALCHEMY_DATABASE_URI='sqlite:////poll.sqlite'
+        # DATABASE=os.path.join(app.instance_path, 'poll.sqlite'),
+        SQLALCHEMY_DATABASE_URI='sqlite:///' + app.instance_path + '/poll.sqlite',
+        SQLALCHEMY_TRACK_MODIFICATIONS=False
     )
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -28,20 +29,18 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        user_row = get_db().execute(
-            'SELECT *'
-            ' FROM user'
-            ' WHERE id=?',
-            [user_id]
-        ).fetchone()
-        if user_row is None:
+        user = User.query.get(user_id)
+        if user is None:
             return None
-        # return User(user_row['id'], user_row['username'], user_row['password'])
-        return None
+        return user
+
     try:
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    from . import db
+    db.init_app(app)
 
     from . import auth, main, poll
     app.register_blueprint(auth.bp)

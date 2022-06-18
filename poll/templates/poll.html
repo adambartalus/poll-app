@@ -11,10 +11,10 @@
     <form action="{{ url_for('poll.poll') }}/{{ poll_id }}" method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <ul>
-        {% for answer in answers %}
+        {% for option in options %}
             <li>
-                <input type="radio" name="choice" value="{{ answer['id'] }}">
-                {{ answer['text'] }} {{ answer['count'] }}
+                <input type="{{ 'checkbox' if multiple else 'radio' }}" name="choice" value="{{ option['id'] }}">
+                {{ option['text'] }} {{ option['count'] }}
             </li>
         {% endfor %}
         </ul>
