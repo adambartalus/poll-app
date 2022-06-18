@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, request, url_for
 from werkzeug.utils import redirect
 
+from poll.model import db
+from poll.models import PollVote, PollQuestion, PollOption, Poll
 from poll.utils import poll_exists
 from poll.utils import get_vote_count
 
-from poll.model import db
-from poll.models import PollVote, PollQuestion, PollOption, Poll
 
 bp = Blueprint('poll', __name__)
 

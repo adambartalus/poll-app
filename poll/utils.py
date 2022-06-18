@@ -1,4 +1,3 @@
-from poll.model import db
 from poll.models import Poll, PollVote
 
 
@@ -9,7 +8,7 @@ def poll_exists(id_):
 
 
 def get_vote_count(poll_option_id):
-    votes = PollVote.query.filter_by(poll_option_id=poll_option_id).all()
-    c = len(votes)
 
-    return c
+    vote_count = PollVote.query.filter_by(poll_option_id=poll_option_id).count()
+
+    return vote_count

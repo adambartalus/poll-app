@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}">
     <title>Main page</title>
 </head>
 <body>
@@ -14,10 +15,12 @@
 
     <form action="{{ url_for('poll.poll') }}" method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <label for="question">Question:</label>
+        <label for="question">Question</label>
+        <br>
         <input type="text" name="question" id="question">
         <br>
-        Answer options: <br>
+        <label id="options_label" for="answer_options">Answer options</label>
+        <br>
         <ul id="answer_options">
             <li><input type="text" name="answer"></li>
             <li><input type="text" name="answer"></li>

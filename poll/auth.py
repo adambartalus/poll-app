@@ -1,12 +1,13 @@
-
 from flask import Blueprint, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, logout_user
-from werkzeug.security import generate_password_hash, check_password_hash
-from poll.models import User
-from poll.model import db
 from flask_wtf import FlaskForm
+from werkzeug.security import generate_password_hash, check_password_hash
 from wtforms import StringField, PasswordField
 from wtforms.validators import Length, EqualTo, DataRequired
+
+from poll.model import db
+from poll.models import User
+
 
 bp = Blueprint('auth', __name__)
 
@@ -22,8 +23,8 @@ def register():
     form = RegisterForm()
     # POST
     if form.validate_on_submit():
-        username = request.form.get('username')
-        password = request.form.get('password')
+        username = form.username.data
+        password = form.password.data
 
         db.session.add(User(username, generate_password_hash(password)))
         db.session.commit()
@@ -44,6 +45,7 @@ def login():
 
     user = User.query.filter_by(username=username).first()
     if user is None or not check_password_hash(user.password_hash, password):
+        # TODO: mark errors
         return redirect(url_for('auth.login'))
 
     login_user(user)
