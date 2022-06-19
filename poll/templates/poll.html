@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}
+    Poll
+{% endblock %}
+{% block body %}
     <h1>{{ question }}</h1>
     <form action="{{ url_for('poll.poll') }}/{{ poll_id }}" method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -20,5 +16,4 @@
         </ul>
         <button>Vote</button>
     </form>
-</body>
-</html>
+{% endblock %}

@@ -1,0 +1,28 @@
+body {
+    background-color: grey;
+}
+li {
+    list-style-type: none;
+    margin-bottom: 5px;
+}
+form {
+    width: fit-content;
+}
+form input {
+    font-size: 1.5rem;
+}
+form label {
+    color: white;
+}
+form button {
+    font-size: 1.5rem;
+    margin-top: 5px;
+    width: 100%;
+}
+#answer_options {
+    margin-top: 0;
+    padding-left: 0;
+}
+#question {
+    margin-bottom: 10px;
+}
