@@ -19,8 +19,13 @@ form button {
     margin-top: 5px;
     width: 100%;
 }
+.input-error {
+    display: inline-block;
+    color: red;
+    margin-bottom: 5px;
+}
 #answer_options {
-    margin-top: 0;
+    margin: 0;
     padding-left: 0;
 }
 #question {
