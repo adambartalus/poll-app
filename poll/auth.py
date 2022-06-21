@@ -9,13 +9,13 @@ from poll.model import db
 from poll.models import User
 
 
-bp = Blueprint('auth', __name__)
-
-
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
     confirm_password = PasswordField('Confirm password', validators=[EqualTo('password')])
+
+
+bp = Blueprint('auth', __name__)
 
 
 @bp.route('/register', methods=['GET', 'POST'])

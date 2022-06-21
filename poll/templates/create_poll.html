@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/create_poll.css') }}">
+{% endblock %}
+{% block title %}
+    Create poll
+{% endblock %}
+{% block body %}
+<form action="{{ url_for('poll.create_poll') }}" method="post" novalidate>
+    {{ form.csrf_token }}
+    {{ form.title.label }} <br>
+    {{ form.title }} <br>
+    {{ form.answer_options.label }} <br>
+    {{ form.answer_options }}
+    {{ form.multiple_choices }} 
+    {{ form.multiple_choices.label }} <br>
+    <button type="submit">Create poll</button>
+</form>
+<script src="{{ url_for('static', filename='javascript/poll.js') }}"></script>
+{% endblock %}

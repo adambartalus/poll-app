@@ -12,24 +12,4 @@
         <a href="/logout">Log out</a>
         <h1>Welcome {{ current_user['username'] }}</h1>
     {% endif %}
-
-    <form action="{{ url_for('poll.poll') }}" method="post">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <label for="question">Question</label>
-        <br>
-        <input type="text" name="question" id="question">
-        <br>
-        <label id="options_label" for="answer_options">Answer options</label>
-        <br>
-        <ul id="answer_options">
-            <li><input type="text" name="answer"></li>
-            <li><input type="text" name="answer"></li>
-            <li><input type="text" name="answer"></li>
-        </ul>
-        <input type="checkbox" name="multiple" id="multiple">
-        <label for="multiple">Multiple choices</label>
-        <br>
-        <button type="submit">Create poll</button>
-    </form>
-    <script src="{{ url_for('static', filename='javascript/poll.js') }}"></script>
 {% endblock %}

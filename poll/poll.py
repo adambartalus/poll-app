@@ -1,10 +1,19 @@
-from flask import Blueprint, render_template, request, url_for
+from flask import Blueprint, render_template, request, url_for, session
+from flask_wtf import FlaskForm
 from werkzeug.utils import redirect
+from wtforms import StringField, FieldList, BooleanField, SubmitField
+from wtforms.validators import DataRequired
 
 from poll.model import db
 from poll.models import PollVote, PollQuestion, PollOption, Poll
 from poll.utils import poll_exists
 from poll.utils import get_vote_count
+
+
+class CreatePollForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    answer_options = FieldList(StringField(''), min_entries=2, label='Answer options')
+    multiple_choices = BooleanField('Multiple choices')
 
 
 bp = Blueprint('poll', __name__)
@@ -37,23 +46,34 @@ def get_poll(id_):
     return render_template('poll.html', **context)
 
 
-@bp.route('/poll', methods=['POST'])
-def poll():
-    question = request.form.get('question')
-    answers = request.form.getlist('answer')
-    multiple = request.form.get('multiple')
+@bp.route('/poll/create', methods=['GET', 'POST'])
+def create_poll():
+    form = CreatePollForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        # options = request.form.getlist('answer-option')
+        options = form.answer_options.data
+        multiple = form.multiple_choices.data
 
-    answers = filter(lambda x: x.strip(), answers)
+        options = filter(lambda x: x.strip(), options)
 
-    new_poll = Poll(multiple=multiple is not None)
-    db.session.add(new_poll)
-    db.session.commit()
+        new_poll = Poll(multiple=multiple)
+        db.session.add(new_poll)
+        db.session.commit()
 
-    db.session.add(PollQuestion(poll_id=new_poll.id, text=question))
-    db.session.commit()
+        db.session.add(PollQuestion(poll_id=new_poll.id, text=title))
+        db.session.commit()
 
-    for answer in answers:
-        db.session.add(PollOption(poll_id=new_poll.id, text=answer))
-    db.session.commit()
+        for option in options:
+            db.session.add(PollOption(poll_id=new_poll.id, text=option))
+        db.session.commit()
 
-    return redirect(url_for('poll.poll') + f'/{new_poll.id}')
+        return redirect(url_for('poll.get_poll', id_=new_poll.id))
+    return render_template('create_poll.html', form=form)
+
+
+@bp.route('/poll/create/add_option', methods=['GET'])
+def add_option():
+    return {
+        "valami": 2
+    }
