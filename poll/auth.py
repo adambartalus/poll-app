@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask import Blueprint, redirect, render_template, url_for, flash, request, abort
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from wtforms import StringField, PasswordField, SubmitField, EmailField
@@ -96,6 +96,9 @@ def confirm_email(token):
         flash('The confirmation link is invalid or has expired.', 'danger')
         return redirect(url_for('main.index'))
     user = User.query.filter_by(email=email).first_or_404()
+    if user.id != current_user.id:
+        flash('Wrong account')
+        return redirect(url_for('main.index'))
     if user.confirmed:
         flash('Account already confirmed. Please login.', 'success')
     else:

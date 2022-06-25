@@ -11,5 +11,4 @@ def send_email(to, subject, template):
         html=template,
         sender=current_app.config['MAIL_DEFAULT_SENDER']
     )
-    print(msg.sender)
     mail.send(msg)

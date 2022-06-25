@@ -49,6 +49,7 @@ def vote_poll(id_):
             db.session.add(PollVote(poll_option_id=choice))
         db.session.commit()
         return redirect(request.referrer)
+    # TODO: handle invalid vote
 
 
 @bp.route('/poll/<int:id_>')
