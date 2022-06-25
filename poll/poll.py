@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, url_for
+from flask_login import login_required
 from flask_wtf import FlaskForm
 from werkzeug.utils import redirect
-from wtforms import StringField, FieldList, BooleanField
+from wtforms import StringField, FieldList, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError
 
 from poll.model import db
@@ -28,6 +29,7 @@ class CreatePollForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     answer_options = FieldList(StringField(''), min_entries=2, label='Answer options', validators=[AtLeast()])
     multiple_choices = BooleanField('Multiple choices')
+    submit = SubmitField('Create poll')
 
 
 bp = Blueprint('poll', __name__)
@@ -38,15 +40,19 @@ def poll():
     return redirect(url_for('poll.create_poll'))
 
 
-@bp.route('/poll/<int:id_>', methods=['GET', 'POST'])
+@bp.route('/poll/<int:id_>', methods=['POST'])
+@login_required
+def vote_poll(id_):
+    choices = request.form.getlist('choice')
+    if choices:
+        for choice in choices:
+            db.session.add(PollVote(poll_option_id=choice))
+        db.session.commit()
+        return redirect(request.referrer)
+
+
+@bp.route('/poll/<int:id_>')
 def get_poll(id_):
-    if request.method == 'POST':
-        choices = request.form.getlist('choice')
-        if choices:
-            for choice in choices:
-                db.session.add(PollVote(poll_option_id=choice))
-            db.session.commit()
-            return redirect(request.referrer)
     if not poll_exists(id_):
         return redirect(url_for('main.index'))
 

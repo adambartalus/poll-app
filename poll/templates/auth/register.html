@@ -1,33 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/register.css') }}">
+{% endblock %}
+{% block title %}
+    Register
+{% endblock %}
+{% block body %}
     <form action="{{url_for('auth.register')}}" method="post" novalidate>
         {{ form.csrf_token }}
-        {{ form.username.label }} <br>
-        {{ form.username }}
-        {% if form.username.errors %}
-        <span>{{ form.username.errors[0] }}</span>
-        {% endif %}
-        <br>
-        {{ form.password.label }} <br>
-        {{ form.password }}
-        {% if form.password.errors %}
-        <span>{{ form.password.errors[0] }}</span>
-        {% endif %}
-        <br>
-        {{ form.confirm_password.label }} <br>
-        {{ form.confirm_password }}
-        {% if form.confirm_password.errors %}
-        <span>{{ form.confirm_password.errors[0] }}</span>
-        {% endif %}
-        <br>
-        <button type="submit">Register</button>
+        <div>
+            {{ form.username.label }} <br>
+            {{ form.username(class_="input-error" if form.username.errors else "") }}
+            {% if form.username.errors %}
+            <span class="error-message">{{ form.username.errors[0] }}</span>
+            {% else %}
+            <br>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.email.label }} <br>
+            {{ form.email(class_="input-error" if form.email.errors else "") }}
+            {% if form.email.errors %}
+                <span class="error-message">{{ form.email.errors[0] }}</span>
+            {% else %}
+                <br>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.password.label }} <br>
+            {{ form.password(class_="input-error" if form.password.errors else "") }}
+            {% if form.password.errors %}
+            <span class="error-message">{{ form.password.errors[0] }}</span>
+            {% else %}
+            <br>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.confirm_password.label }} <br>
+            {{ form.confirm_password(class_="input-error" if form.confirm_password.errors else "") }}
+            {% if form.confirm_password.errors %}
+            <span class="error-message">{{ form.confirm_password.errors[0] }}</span>
+            {% else %}
+            <br>
+            {% endif %}
+        </div>
+        {{ form.submit }}
     </form>
-</body>
-</html>
+{% endblock %}
