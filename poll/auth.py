@@ -10,6 +10,7 @@ from wtforms.validators import Length, EqualTo, DataRequired, Email
 from poll.email import send_email
 from poll.model import db
 from poll.models import User
+from poll.safe_redirect import get_redirect_target, is_safe_url
 from poll.token import generate_confirmation_token, confirm_token
 
 
@@ -57,6 +58,7 @@ def register():
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
+    next_ = request.args.get('next')
     form = LoginForm()
     if form.validate_on_submit():
         username = form.username.data
@@ -70,9 +72,13 @@ def login():
 
         login_user(user)
 
-        return redirect(url_for('main.index'))
+        if not is_safe_url(next_url):
+            print("nem safe")
+            abort(400)
 
-    return render_template('auth/login.html', form=form)
+        return redirect(next_url or url_for('main.index'))
+
+    return render_template('auth/login.html', form=form, next=next_)
 
 
 @bp.route('/logout')

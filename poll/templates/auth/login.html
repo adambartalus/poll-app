@@ -10,7 +10,7 @@
         {{ form.password.label }} <br>
         {{ form.password }}
         {{ form.submit }}
-        <input type="hidden" name="next" value="{{ next }}">
+        <input type="hidden" name="next" value="{{ next if next else '' }}">
     </form>
 {% endblock %}
 
