@@ -1,38 +1,13 @@
-from flask import Blueprint, render_template, request, url_for
+from flask import render_template, request, url_for
 from flask_login import login_required
-from flask_wtf import FlaskForm
 from werkzeug.utils import redirect
-from wtforms import StringField, FieldList, BooleanField, SubmitField
-from wtforms.validators import DataRequired, ValidationError
 
 from poll.model import db
 from poll.models import PollVote, PollQuestion, PollOption, Poll
 from poll.utils import poll_exists
 from poll.utils import get_vote_count
-
-
-class AtLeast:
-    def __init__(self, message=None):
-        if not message:
-            message = 'There should be at least 2 valid options'
-        self.message = message
-
-    def __call__(self, form, field):
-        options = map(lambda x: x.data, field.entries)
-        options = list(filter(lambda x: x.strip(), options))
-
-        if len(options) < 2:
-            raise ValidationError(self.message)
-
-
-class CreatePollForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    answer_options = FieldList(StringField(''), min_entries=2, label='Answer options', validators=[AtLeast()])
-    multiple_choices = BooleanField('Multiple choices')
-    submit = SubmitField('Create poll')
-
-
-bp = Blueprint('poll', __name__)
+from poll.poll import bp
+from poll.poll.forms import CreatePollForm
 
 
 @bp.route('/poll')

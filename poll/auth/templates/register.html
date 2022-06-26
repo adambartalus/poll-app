@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block head %}
     {{ super() }}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/register.css') }}">
+    <link rel="stylesheet" href="{{ url_for('auth.static', filename='style/register.css') }}">
 {% endblock %}
 {% block title %}
     Register

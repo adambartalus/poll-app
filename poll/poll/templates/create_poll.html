@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block head %}
     {{ super() }}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/create_poll.css') }}">
+    <link rel="stylesheet" href="{{ url_for('poll.static', filename='style/create_poll.css') }}">
 {% endblock %}
 {% block title %}
     Create poll
@@ -31,5 +31,5 @@
     </div>
     {{ form.submit }}
 </form>
-<script src="{{ url_for('static', filename='javascript/poll.js') }}"></script>
+<script src="{{ url_for('poll.static', filename='script/poll.js') }}"></script>
 {% endblock %}
