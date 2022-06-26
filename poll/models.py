@@ -13,6 +13,7 @@ class User(db.Model, UserMixin):
     registration_date = db.Column(db.DateTime, nullable=False, default=datetime.now())
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
     confirmation_date = db.Column(db.DateTime, nullable=True)
+    votes = db.relationship('PollVote', backref='user', lazy='dynamic')
 
     def __init__(self, username, email, password_hash):
         self.username = username
@@ -24,6 +25,7 @@ class Poll(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     multiple = db.Column(db.Boolean, default=False)
     created = db.Column(db.DateTime, default=datetime.now())
+    options = db.relationship('PollOption', backref='poll', lazy=True)
 
 
 class PollQuestion(db.Model):
@@ -34,10 +36,12 @@ class PollQuestion(db.Model):
 
 class PollOption(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    poll_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'), nullable=False)
     text = db.Column(db.String(64), nullable=False)
+    votes = db.relationship('PollVote', backref='poll_option', lazy=True)
 
 
 class PollVote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     poll_option_id = db.Column(db.Integer, db.ForeignKey('poll_option.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

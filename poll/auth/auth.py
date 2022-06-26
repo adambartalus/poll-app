@@ -9,7 +9,7 @@ from poll.auth.forms import RegisterForm, LoginForm
 from poll.email import send_email
 from poll.model import db
 from poll.models import User
-from poll.safe_redirect import get_redirect_target, is_safe_url
+from poll.safe_redirect import is_safe_url
 from poll.token import generate_confirmation_token, confirm_token
 
 

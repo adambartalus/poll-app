@@ -1,9 +1,10 @@
+import os
+
 from flask.cli import FlaskGroup
 import click
 
 from poll import create_app
 from poll.model import db
-
 
 cli = FlaskGroup(create_app())
 

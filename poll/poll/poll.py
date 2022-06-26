@@ -1,11 +1,10 @@
-from flask import render_template, request, url_for
-from flask_login import login_required
+from flask import render_template, request, url_for, flash
+from flask_login import login_required, current_user
 from werkzeug.utils import redirect
 
 from poll.model import db
 from poll.models import PollVote, PollQuestion, PollOption, Poll
-from poll.utils import poll_exists
-from poll.utils import get_vote_count
+from poll.utils import poll_exists, get_vote_count, voted_on
 from poll.poll import bp
 from poll.poll.forms import CreatePollForm
 
@@ -18,12 +17,17 @@ def poll():
 @bp.route('/poll/<int:id_>', methods=['POST'])
 @login_required
 def vote_poll(id_):
+    if voted_on(current_user, id_):
+        flash('You already voted on this poll')
+        return redirect(url_for('poll.get_poll', id_=id_))
     choices = request.form.getlist('choice')
     if choices:
         for choice in choices:
-            db.session.add(PollVote(poll_option_id=choice))
+            db.session.add(PollVote(poll_option_id=choice, user_id=current_user.id))
         db.session.commit()
         return redirect(request.referrer)
+    flash('You have to select at least one option')
+    return redirect(url_for('poll.get_poll', id_=id_))
     # TODO: handle invalid vote
 
 
@@ -32,9 +36,10 @@ def get_poll(id_):
     if not poll_exists(id_):
         return redirect(url_for('main.index'))
 
+    poll_ = Poll.query.get(id_)
     question = PollQuestion.query.filter_by(poll_id=id_).first().text
-    options = PollOption.query.filter_by(poll_id=id_).all()
-    multiple = Poll.query.get(id_).multiple
+    options = poll_.options
+    multiple = poll_.multiple
 
     options = map(lambda x: {'id': x.id, 'text': x.text, 'count': get_vote_count(x.id)}, options)
 
