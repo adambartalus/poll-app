@@ -1,11 +1,44 @@
 body {
+    background-color: #F5F5DC;
+    font-family: sans-serif;
+    margin: 0;
+}
+header {
     background-color: grey;
+    padding: 5px;
+}
+main {
+    margin-top: 10px;
+    padding: 5px 10px;
+}
+h1 {
+    display: inline;
+}
+nav {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+header nav {
+    font-size: 1.5rem;
+}
+nav ul {
+    display: inline-block;
+    float: right;
+    margin: 0;
+}
+header nav a {
+    text-decoration: none;
+    color: black;
+}
+#user-menu {
+
 }
 li {
     list-style-type: none;
     margin-bottom: 5px;
 }
 form {
+    background-color: #123456;
     width: fit-content;
     padding: 10px;
 }
@@ -14,6 +47,10 @@ form input {
 }
 form label {
     color: white;
+}
+form ul {
+    margin: 0;
+    padding: 0;
 }
 form div {
     margin-top:5px;
@@ -37,4 +74,23 @@ form input[type="submit"] {
 }
 #question {
     margin-bottom: 10px;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0px;
+  background-color: #f9f9f9;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }

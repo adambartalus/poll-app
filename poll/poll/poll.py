@@ -28,7 +28,6 @@ def vote_poll(id_):
         return redirect(request.referrer)
     flash('You have to select at least one option')
     return redirect(url_for('poll.get_poll', id_=id_))
-    # TODO: handle invalid vote
 
 
 @bp.route('/poll/<int:id_>')
@@ -37,7 +36,7 @@ def get_poll(id_):
         return redirect(url_for('main.index'))
 
     poll_ = Poll.query.get(id_)
-    question = PollQuestion.query.filter_by(poll_id=id_).first().text
+    title = PollQuestion.query.filter_by(poll_id=id_).first().text
     options = poll_.options
     multiple = poll_.multiple
 
@@ -45,7 +44,7 @@ def get_poll(id_):
 
     context = {
         'poll_id': id_,
-        'question': question,
+        'title': title,
         'options': options,
         'multiple': multiple
     }

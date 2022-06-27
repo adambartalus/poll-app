@@ -7,29 +7,32 @@
     Create poll
 {% endblock %}
 {% block body %}
-<form action="{{ url_for('poll.create_poll') }}" method="post" novalidate>
-    {{ form.csrf_token }}
-    <div>
-        {{ form.title.label }} <br>
-        {{ form.title }}
-        {% if form.title.errors %}
-            <span class="error-message">{{ form.title.errors[0] }}</span>
-        {% else %}
-            <br>
-        {% endif %}
-    </div>
-    <div>
-        {{ form.answer_options.label }} <br>
-        {{ form.answer_options }}
-        {% if form.answer_options.errors %}
-            <span class="error-message">{{ form.answer_options.errors[0] }}</span>
-        {% endif %}
-    </div>
-    <div>
-        {{ form.multiple_choices }}
-        {{ form.multiple_choices.label }} <br>
-    </div>
-    {{ form.submit }}
-</form>
-<script src="{{ url_for('poll.static', filename='script/poll.js') }}"></script>
+    {{ super() }}
+    <script src="{{ url_for('poll.static', filename='script/poll.js') }}"></script>
+{% endblock %}
+{% block main %}
+    <form action="{{ url_for('poll.create_poll') }}" method="post" novalidate>
+        {{ form.csrf_token }}
+        <div>
+            {{ form.title.label }} <br>
+            {{ form.title }}
+            {% if form.title.errors %}
+                <span class="error-message">{{ form.title.errors[0] }}</span>
+            {% else %}
+                <br>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.answer_options.label }} <br>
+            {{ form.answer_options }}
+            {% if form.answer_options.errors %}
+                <span class="error-message">{{ form.answer_options.errors[0] }}</span>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.multiple_choices }}
+            {{ form.multiple_choices.label }} <br>
+        </div>
+        {{ form.submit }}
+    </form>
 {% endblock %}

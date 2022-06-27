@@ -22,13 +22,20 @@ class Config:
     MAIL_PASSWORD = environ.get("APP_MAIL_PASSWORD")
     MAIL_DEFAULT_SENDER = 'badam.flask@gmail.com'
 
+    TESTING = False
+
 
 class ProdConfig(Config):
     FLASK_ENV = 'production'
     DEBUG = False
-    TESTING = False
 
 
 class DevConfig(Config):
     FLASK_ENV = 'development'
     DEBUG = True
+
+
+class TestConfig(Config):
+    TESTING = True
+    WTF_CSRF_ENABLED = False
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///../tests/poll_test.sqlite'

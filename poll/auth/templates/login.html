@@ -3,14 +3,21 @@
     Login
 {% endblock %}
 {% block body %}
+    {{ super() }}
+{% endblock %}
+{% block main %}
     <form action="{{ url_for('auth.login') }}" method="post" novalidate>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <span class="error-message">{{ messages[0] }}</span>
+            {% endif %}
+        {% endwith %}
         {{ form.csrf_token }}
         {{ form.username.label }} <br>
         {{ form.username }} <br>
         {{ form.password.label }} <br>
-        {{ form.password }}
+        {{ form.password }} <br>
         {{ form.submit }}
         <input type="hidden" name="next" value="{{ next if next else '' }}">
     </form>
 {% endblock %}
-

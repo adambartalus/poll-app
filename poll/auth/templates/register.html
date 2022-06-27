@@ -7,6 +7,9 @@
     Register
 {% endblock %}
 {% block body %}
+    {{ super() }}
+{% endblock %}
+{% block main %}
     <form action="{{url_for('auth.register')}}" method="post" novalidate>
         {{ form.csrf_token }}
         <div>
@@ -47,7 +50,7 @@
         </div>
         {{ form.submit }}
         <div id="login">
-            Already signup up? <a href="{{ url_for('auth.login') }}">Log in.</a>
+            Already signed up? <a href="{{ url_for('auth.login') }}">Log in.</a>
         </div>
     </form>
 {% endblock %}

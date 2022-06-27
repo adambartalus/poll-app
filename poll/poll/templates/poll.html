@@ -3,6 +3,9 @@
     Poll
 {% endblock %}
 {% block body %}
+    {{ super() }}
+{% endblock %}
+{% block main %}
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <ul>
@@ -12,7 +15,7 @@
             </ul>
         {% endif %}
     {% endwith %}
-    <h1>{{ question }}</h1>
+    <h1>{{ title }}</h1>
     <form action="{{ url_for('poll.vote_poll', id_=poll_id) }}" method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <ul>
@@ -23,6 +26,6 @@
             </li>
         {% endfor %}
         </ul>
-        <button>Vote</button>
+        <input type="submit" value="Vote">
     </form>
 {% endblock %}

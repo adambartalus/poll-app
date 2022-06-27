@@ -9,9 +9,9 @@ from poll.model import db, mail
 from poll.models import User
 
 
-def create_app():
+def create_app(config='config.DevConfig'):
     app = Flask(__name__, instance_relative_config=True)
-    app.config.from_object('config.DevConfig')
+    app.config.from_object(config)
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'

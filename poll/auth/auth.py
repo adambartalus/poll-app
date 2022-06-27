@@ -48,17 +48,15 @@ def login():
         next_url = request.form.get('next')
 
         user = User.query.filter_by(username=username).first()
-        if user is None or not check_password_hash(user.password_hash, password):
-            # TODO: mark errors
-            return redirect(url_for('auth.login'))
+        if user and check_password_hash(user.password_hash, password):
+            login_user(user)
 
-        login_user(user)
+            if not is_safe_url(next_url):
+                abort(400)
 
-        if not is_safe_url(next_url):
-            print("nem safe")
-            abort(400)
+            return redirect(next_url or url_for('main.index'))
 
-        return redirect(next_url or url_for('main.index'))
+        flash('Invalid username or password.')
 
     return render_template('login.html', form=form, next=next_)
 
