@@ -1,31 +1,45 @@
 {% extends "base.html" %}
-{% block title %}
-    Poll
+
+{%- block title -%}Poll{%- endblock -%}
+
+{% block links %}
+  {{ super() }}
+{%- endblock %}
+
+{% block head %}
+  {{ super() }}
 {% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+{%- endblock %}
+
 {% block body %}
-    {{ super() }}
+  {{ super() }}
 {% endblock %}
+
 {% block main %}
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-    <h1>{{ title }}</h1>
-    <form action="{{ url_for('poll.vote_poll', id_=poll_id) }}" method="post">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <ul>
-        {% for option in options %}
-            <li>
-                <input type="{{ 'checkbox' if multiple else 'radio' }}" name="choice" value="{{ option['id'] }}">
-                {{ option['text'] }} {{ option['count'] }}
-            </li>
-        {% endfor %}
-        </ul>
-        <input type="submit" value="Vote">
-    </form>
+  {{ super() }}
+  {%- with messages = get_flashed_messages() -%}
+    {% if messages -%}
+      <ul>
+        {%- for message in messages %}
+          <li>{{ message }}</li>
+        {%- endfor %}
+      </ul>
+    {%- endif %}
+  {%- endwith %}
+  <h2>{{ title }}</h2>
+  <form action="{{ url_for('poll.vote_poll', id_=poll_id) }}" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <ul>
+      {%- for option in options %}
+      <li>
+        <input type="{{ 'checkbox' if multiple else 'radio' }}" name="choice" value="{{ option['id'] }}">
+        {{ option['text'] }} {{ option['count'] }}
+      </li>
+      {%- endfor %}
+    </ul>
+    <input type="submit" value="Vote">
+  </form>
 {% endblock %}

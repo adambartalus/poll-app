@@ -5,8 +5,15 @@ from poll import create_app
 from poll.model import db
 from poll.models import User
 
-
-@pytest.fixture
+def app1():
+    app = create_app('config.TestConfig')
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
+        db.session.add(User('test', '', generate_password_hash('test')))
+        db.session.commit()
+    yield app
+@pytest.fixture()
 def app():
     app = create_app('config.TestConfig')
     with app.app_context():

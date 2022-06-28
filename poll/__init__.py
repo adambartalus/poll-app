@@ -4,7 +4,7 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 
-from poll import auth, main, poll
+from poll import auth, main, poll, user
 from poll.model import db, mail
 from poll.models import User
 
@@ -35,5 +35,6 @@ def create_app(config='config.DevConfig'):
     app.register_blueprint(auth.bp)
     app.register_blueprint(main.bp)
     app.register_blueprint(poll.bp)
+    app.register_blueprint(user.bp)
 
     return app

@@ -26,9 +26,10 @@ class Poll(db.Model):
     multiple = db.Column(db.Boolean, default=False)
     created = db.Column(db.DateTime, default=datetime.now())
     options = db.relationship('PollOption', backref='poll', lazy=True)
+    title = db.relationship('PollTitle', backref='poll', uselist=False)
 
 
-class PollQuestion(db.Model):
+class PollTitle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'), nullable=False)
     text = db.Column(db.String(64), nullable=False)

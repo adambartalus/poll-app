@@ -1,5 +1,6 @@
 from flask_login import current_user
 import pytest
+from urllib.parse import urlparse
 
 from poll.models import User
 
@@ -15,7 +16,7 @@ def test_register(client, app):
             'confirm_password': '12345678'
         }
     )
-    assert response.headers["Location"] == 'http://localhost/login'
+    assert urlparse(response.headers["Location"]).path == '/login'
     with app.app_context():
         assert User.query.filter_by(username='a').first() is not None
         assert User.query.filter_by(username='b').first() is None
@@ -45,7 +46,7 @@ def test_login(client, auth):
     assert client.get('/login').status_code == 200
     response = auth.login()
 
-    assert response.headers["Location"] == 'http://localhost/'
+    assert urlparse(response.headers["Location"]).path == '/'
 
     with client:
         client.get('/')

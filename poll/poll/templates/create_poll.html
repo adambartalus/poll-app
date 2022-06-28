@@ -1,38 +1,54 @@
 {% extends "base.html" %}
 {% block head %}
-    {{ super() }}
-    <link rel="stylesheet" href="{{ url_for('poll.static', filename='style/create_poll.css') }}">
+  {{ super() }}
 {% endblock %}
-{% block title %}
-    Create poll
-{% endblock %}
+{% block links %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('poll.static', filename='style/create_poll.css') }}">
+{%- endblock %}
+
+{% block title %}Create poll{% endblock %}
+
 {% block body %}
-    {{ super() }}
-    <script src="{{ url_for('poll.static', filename='script/poll.js') }}"></script>
+  {{ super() }}
 {% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ url_for('poll.static', filename='script/poll.js') }}"></script>
+{%- endblock %}
+
 {% block main %}
-    <form action="{{ url_for('poll.create_poll') }}" method="post" novalidate>
-        {{ form.csrf_token }}
-        <div>
-            {{ form.title.label }} <br>
-            {{ form.title }}
-            {% if form.title.errors %}
-                <span class="error-message">{{ form.title.errors[0] }}</span>
-            {% else %}
-                <br>
-            {% endif %}
-        </div>
-        <div>
-            {{ form.answer_options.label }} <br>
-            {{ form.answer_options }}
-            {% if form.answer_options.errors %}
-                <span class="error-message">{{ form.answer_options.errors[0] }}</span>
-            {% endif %}
-        </div>
-        <div>
-            {{ form.multiple_choices }}
-            {{ form.multiple_choices.label }} <br>
-        </div>
-        {{ form.submit }}
-    </form>
+  {{ super() }}
+  <form action="{{ url_for('poll.create_poll') }}" method="post" novalidate>
+    {{ form.csrf_token }}
+    <div>
+      {{ form.title.label }} <br>
+      {{ form.title }}
+      {% if form.title.errors -%}
+        <span class="error-message">{{ form.title.errors[0] }}</span>
+      {%- else -%}
+        <br>
+      {%- endif %}
+    </div>
+    <div>
+      <label>Answer_options</label> <br>
+      <ul id="{{ form.answer_options.id }}">
+        {%- for option in form.answer_options %}
+        <li>
+          {{ option.label }}
+          {{ option }}
+        </li>
+        {%- endfor %}
+      </ul>
+      {%- if form.answer_options.errors %}
+        <span class="error-message">{{ form.answer_options.errors[0] }}</span>
+      {% endif %}
+    </div>
+    <div>
+      {{ form.multiple_choices }}
+      {{ form.multiple_choices.label }} <br>
+    </div>
+    {{ form.submit }}
+  </form>
 {% endblock %}

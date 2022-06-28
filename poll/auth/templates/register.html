@@ -1,56 +1,67 @@
 {% extends "base.html" %}
+
 {% block head %}
-    {{ super() }}
-    <link rel="stylesheet" href="{{ url_for('auth.static', filename='style/register.css') }}">
+  {{ super() }}
 {% endblock %}
-{% block title %}
-    Register
-{% endblock %}
+
+{% block links %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('auth.static', filename='style/register.css') }}">
+{%- endblock %}
+
+{%- block title -%}Register{%- endblock -%}
+
 {% block body %}
-    {{ super() }}
+  {{ super() }}
 {% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+{%- endblock %}
+
 {% block main %}
-    <form action="{{url_for('auth.register')}}" method="post" novalidate>
-        {{ form.csrf_token }}
-        <div>
-            {{ form.username.label }} <br>
-            {{ form.username(class_="input-error" if form.username.errors else "") }}
-            {% if form.username.errors %}
-            <span class="error-message">{{ form.username.errors[0] }}</span>
-            {% else %}
-            <br>
-            {% endif %}
-        </div>
-        <div>
-            {{ form.email.label }} <br>
-            {{ form.email(class_="input-error" if form.email.errors else "") }}
-            {% if form.email.errors %}
-                <span class="error-message">{{ form.email.errors[0] }}</span>
-            {% else %}
-                <br>
-            {% endif %}
-        </div>
-        <div>
-            {{ form.password.label }} <br>
-            {{ form.password(class_="input-error" if form.password.errors else "") }}
-            {% if form.password.errors %}
-            <span class="error-message">{{ form.password.errors[0] }}</span>
-            {% else %}
-            <br>
-            {% endif %}
-        </div>
-        <div>
-            {{ form.confirm_password.label }} <br>
-            {{ form.confirm_password(class_="input-error" if form.confirm_password.errors else "") }}
-            {% if form.confirm_password.errors %}
-            <span class="error-message">{{ form.confirm_password.errors[0] }}</span>
-            {% else %}
-            <br>
-            {% endif %}
-        </div>
-        {{ form.submit }}
-        <div id="login">
-            Already signed up? <a href="{{ url_for('auth.login') }}">Log in.</a>
-        </div>
-    </form>
+  {{ super() }}
+  <form action="{{url_for('auth.register')}}" method="post" novalidate>
+    {{ form.csrf_token }}
+    <div>
+      {{ form.username.label }} <br>
+      {{ form.username(class_="input-error" if form.username.errors else "") }}
+      {% if form.username.errors -%}
+        <span class="error-message">{{ form.username.errors[0] }}</span>
+      {%- else -%}
+      <br>
+      {%- endif %}
+    </div>
+    <div>
+      {{ form.email.label }} <br>
+      {{ form.email(class_="input-error" if form.email.errors else "") }}
+      {% if form.email.errors -%}
+        <span class="error-message">{{ form.email.errors[0] }}</span>
+      {%- else -%}
+        <br>
+      {%- endif %}
+    </div>
+    <div>
+      {{ form.password.label }} <br>
+      {{ form.password(class_="input-error" if form.password.errors else "") }}
+      {% if form.password.errors -%}
+        <span class="error-message">{{ form.password.errors[0] }}</span>
+      {%- else -%}
+        <br>
+      {%- endif %}
+    </div>
+    <div>
+      {{ form.confirm_password.label }} <br>
+      {{ form.confirm_password(class_="input-error" if form.confirm_password.errors else "") }}
+      {% if form.confirm_password.errors -%}
+        <span class="error-message">{{ form.confirm_password.errors[0] }}</span>
+      {%- else -%}
+        <br>
+      {%- endif %}
+    </div>
+    {{ form.submit }}
+    <div id="login">
+      Already signed up? <a href="{{ url_for('auth.login') }}">Log in.</a>
+    </div>
+  </form>
 {% endblock %}

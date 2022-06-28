@@ -6,7 +6,7 @@ from wtforms.validators import DataRequired, ValidationError
 class AtLeast:
     def __init__(self, min_=2, message=None):
         if not message:
-            message = 'There should be at least 2 valid options'
+            message = 'There should be at least 2 valid options.'
         self.message = message
         self.min = min_
 
@@ -19,7 +19,7 @@ class AtLeast:
 
 
 class CreatePollForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
+    title = StringField('Title', validators=[DataRequired(message='Title is required.')])
     answer_options = FieldList(StringField(''), min_entries=2, label='Answer options', validators=[AtLeast()])
     multiple_choices = BooleanField('Multiple choices')
     submit = SubmitField('Create poll')

@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from werkzeug.utils import redirect
 
 from poll.model import db
-from poll.models import PollVote, PollQuestion, PollOption, Poll
+from poll.models import PollVote, PollTitle, PollOption, Poll
 from poll.utils import poll_exists, get_vote_count, voted_on
 from poll.poll import bp
 from poll.poll.forms import CreatePollForm
@@ -14,7 +14,7 @@ def poll():
     return redirect(url_for('poll.create_poll'))
 
 
-@bp.route('/poll/<int:id_>', methods=['POST'])
+@bp.route('/poll/<int:id_>/vote', methods=['POST'])
 @login_required
 def vote_poll(id_):
     if voted_on(current_user, id_):
@@ -25,7 +25,7 @@ def vote_poll(id_):
         for choice in choices:
             db.session.add(PollVote(poll_option_id=choice, user_id=current_user.id))
         db.session.commit()
-        return redirect(request.referrer)
+        return redirect(url_for('poll.get_poll', id_=id_))
     flash('You have to select at least one option')
     return redirect(url_for('poll.get_poll', id_=id_))
 
@@ -36,7 +36,7 @@ def get_poll(id_):
         return redirect(url_for('main.index'))
 
     poll_ = Poll.query.get(id_)
-    title = PollQuestion.query.filter_by(poll_id=id_).first().text
+    title = PollTitle.query.filter_by(poll_id=id_).first().text
     options = poll_.options
     multiple = poll_.multiple
 
@@ -65,7 +65,7 @@ def create_poll():
         db.session.add(new_poll)
         db.session.flush()
 
-        db.session.add(PollQuestion(poll_id=new_poll.id, text=title))
+        db.session.add(PollTitle(poll_id=new_poll.id, text=title))
 
         for option in options:
             db.session.add(PollOption(poll_id=new_poll.id, text=option))

@@ -1,23 +1,23 @@
 {% extends "base.html" %}
+
+{% block title %}Main page{% endblock %}
+
+{% block links %}
+  {{ super() }}
+{%- endblock %}
+
 {% block head %}
-    {{ super() }}
-{% endblock %}
-{% block title %}
-    Main page
+  {{ super() }}
 {% endblock %}
 
+{% block main -%}
+  {{ super() }}
+{%- endblock %}
+
 {% block body %}
-    {{ super() }}
+  {{ super() }}
 {% endblock %}
-{% block main %}
-    {% if current_user.is_authenticated %}
-        <h2>Welcome {{ current_user['username'] }}</h2>
-    {% endif %}
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                <span>{{ message }}</span>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+{%- endblock %}
