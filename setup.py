@@ -9,6 +9,8 @@ setup(
     install_requires=[
         'flask',
         'werkzeug',
-        'pytest'
+        'pytest',
+        'wtforms',
+        'itsdangerous'
     ],
 )

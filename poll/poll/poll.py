@@ -4,7 +4,7 @@ from werkzeug.utils import redirect
 
 from poll.model import db
 from poll.models import PollVote, PollTitle, PollOption, Poll
-from poll.utils import poll_exists, get_vote_count, voted_on
+from poll.utils import poll_exists, get_vote_count
 from poll.poll import bp
 from poll.poll.forms import CreatePollForm
 
@@ -17,7 +17,7 @@ def poll():
 @bp.route('/poll/<int:id_>/vote', methods=['POST'])
 @login_required
 def vote_poll(id_):
-    if voted_on(current_user, id_):
+    if current_user.voted_on(id_):
         flash('You already voted on this poll')
         return redirect(url_for('poll.get_poll', id_=id_))
     choices = request.form.getlist('choice')

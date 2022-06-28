@@ -20,6 +20,29 @@ class User(db.Model, UserMixin):
         self.email = email
         self.password_hash = password_hash
 
+    def get_voted_polls(self):
+        """
+
+        Returns: the polls that the user has voted on
+
+        """
+        voted_poll_ids = [vote.poll_option.poll_id for vote in self.votes]
+        return Poll.query.filter(Poll.id.in_(voted_poll_ids)).all()
+
+    def voted_on(self, poll_id):
+        """
+
+        Args:
+            poll_id: the id of the poll
+
+        Returns: whether the user has voted on the poll with the id poll_id
+
+        """
+        for vote in self.votes:
+            if vote.poll_option.poll.id == poll_id:
+                return True
+        return False
+
 
 class Poll(db.Model):
     id = db.Column(db.Integer, primary_key=True)
