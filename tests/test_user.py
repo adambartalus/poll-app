@@ -33,7 +33,6 @@ def test_voted_polls(client, app, auth):
     with app.app_context():
         poll = Poll.query.filter_by(id=1).first()
         assert poll is not None
-        print(list(map(lambda x: x.id, poll.options)))
     auth.login()
     client.post(
         '/poll/1/vote',
@@ -42,5 +41,4 @@ def test_voted_polls(client, app, auth):
         }
     )
     response = client.get('/user/voted-polls')
-    print(response.data)
     assert b"test-title" in response.data

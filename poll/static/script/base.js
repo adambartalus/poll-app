@@ -1,5 +1,7 @@
 user_btn = document.querySelector('#user-btn')
-user_btn.addEventListener('click', myFunction)
+if(user_btn) {
+    user_btn.addEventListener('click', myFunction)
+}
 function myFunction(e) {
     user_dropdown = document.querySelector("#user-dropdown");
     console.log(user_dropdown.classList);

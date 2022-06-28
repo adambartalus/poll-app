@@ -29,7 +29,7 @@ def register():
 
         token = generate_confirmation_token(user.email)
         confirm_url = url_for('auth.confirm_email', token=token, _external=True)
-        html = render_template('activate.html', confirm_url=confirm_url)
+        html = render_template('activate.html', confirm_url=confirm_url, username=username)
         subject = "Please confirm your email"
         send_email(user.email, subject, html)
 

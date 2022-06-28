@@ -5,21 +5,14 @@ from poll import create_app
 from poll.model import db
 from poll.models import User
 
-def app1():
-    app = create_app('config.TestConfig')
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
-        db.session.add(User('test', '', generate_password_hash('test')))
-        db.session.commit()
-    yield app
+
 @pytest.fixture()
 def app():
     app = create_app('config.TestConfig')
     with app.app_context():
         db.drop_all()
         db.create_all()
-        db.session.add(User('test', '', generate_password_hash('test')))
+        db.session.add(User('test', 'test@test.test', generate_password_hash('test')))
         db.session.commit()
     yield app
 
@@ -38,10 +31,15 @@ class AuthActions(object):
     def __init__(self, client):
         self._client = client
 
-    def login(self, username='test', password='test'):
+    def login(self, username='test', password='test', follow_redirects=False, **kwargs):
         return self._client.post(
             '/login',
-            data={'username': username, 'password': password}
+            data={
+                'username': username,
+                'password': password,
+                **kwargs
+            },
+            follow_redirects=follow_redirects
         )
 
     def logout(self):
