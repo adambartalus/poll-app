@@ -22,6 +22,7 @@ def user(app):
     with app.app_context():
         return User.query.filter_by(username='test').first()
 
+
 @pytest.fixture()
 def client(app):
     return app.test_client()

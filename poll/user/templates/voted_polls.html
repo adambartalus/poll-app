@@ -20,6 +20,7 @@
 
 {% block main %}
   {{ super() }}
+  <h2>Your voted polls</h2>
   {% if polls -%}
     {%- for poll in polls %}
       <p><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></p>

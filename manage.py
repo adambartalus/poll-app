@@ -1,5 +1,3 @@
-import os
-
 from flask.cli import FlaskGroup
 import click
 

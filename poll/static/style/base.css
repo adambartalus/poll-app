@@ -7,10 +7,6 @@ header {
     background-color: grey;
     padding: 5px;
 }
-main {
-    margin-top: 10px;
-    padding: 5px 10px;
-}
 h1 {
     display: inline;
 }
@@ -40,11 +36,17 @@ li {
 }
 form {
     background-color: #123456;
-    width: fit-content;
+    border-radius: 5px;
+    max-width: 400px;
+    margin: 0 auto;
     padding: 10px;
 }
 form input {
     font-size: 1.5rem;
+    box-sizing: border-box;
+}
+form input[type="text"], form input[type="password"], form input[type="email"] {
+    width: 100%;
 }
 form label {
     color: white;
@@ -125,4 +127,16 @@ form input[type="submit"] {
 
 .show {
     display:block;
+}
+.error {
+  background-color: #f56c6c;
+  padding: 10px;
+}
+.success {
+  background-color: #9cfa98;
+  padding: 10px;
+}
+.flash-messages {
+  margin: 0;
+  padding: 0;
 }

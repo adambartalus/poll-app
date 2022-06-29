@@ -8,4 +8,4 @@ bp = Blueprint(
     static_url_path='/auth/static'
 )
 
-from poll.auth import auth
+from poll.auth import views

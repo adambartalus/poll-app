@@ -51,6 +51,21 @@ class Poll(db.Model):
     options = db.relationship('PollOption', backref='poll', lazy=True)
     title = db.relationship('PollTitle', backref='poll', uselist=False)
 
+    @staticmethod
+    def get_most_popular(n):
+        polls = Poll.query.all()
+        polls.sort(reverse=True, key=Poll.get_vote_count)
+        return polls[:n]
+
+    @staticmethod
+    def get_most_recent(n):
+        polls = Poll.query.all()
+        polls.sort(reverse=True, key=lambda x: x.created)
+        return polls[:n]
+
+    def get_vote_count(self):
+        return sum(map(lambda x: x.get_vote_count(), self.options))
+
 
 class PollTitle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -63,6 +78,9 @@ class PollOption(db.Model):
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'), nullable=False)
     text = db.Column(db.String(64), nullable=False)
     votes = db.relationship('PollVote', backref='poll_option', lazy=True)
+
+    def get_vote_count(self):
+        return len(self.votes)
 
 
 class PollVote(db.Model):

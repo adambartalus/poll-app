@@ -11,6 +11,7 @@ setup(
         'werkzeug',
         'pytest',
         'wtforms',
-        'itsdangerous'
+        'itsdangerous',
+        'python_dotenv'
     ],
 )

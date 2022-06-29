@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Main page{% endblock %}
+
+{% block links %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('main.static', filename='style/index.css') }}">
+{%- endblock %}
+
+{% block head %}
+  {{ super() }}
+{% endblock %}
+
+{% block main -%}
+  {{ super() }}
+  {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+      <ul class="flash-messages">
+        {% for category, message in messages %}
+          <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+<div id="poll-container">
+  <div class="polls" id="most-popular-polls">
+    <h2>Most popular polls</h2>
+    <ul>
+    {% for poll in most_popular_polls %}
+      <li class="poll">
+          <a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a> {{ poll.get_vote_count() }}
+      </li>
+    {% endfor %}
+    </ul>
+  </div>
+  <div class="polls" id="most-recent-polls">
+    <h2>Most recent polls</h2>
+    <ul>
+      {% for poll in most_recent_polls %}
+        <li class="poll">
+          <a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a> {{ poll.created }}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+  <a id="create" href="{{ url_for('poll.create_poll') }}">Create a poll</a>
+{%- endblock %}
+
+{% block body %}
+  {{ super() }}
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+{%- endblock %}

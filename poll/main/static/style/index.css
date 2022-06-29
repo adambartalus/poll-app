@@ -1,0 +1,43 @@
+.polls {
+  margin: 10px;
+  border:1px solid black;
+}
+.polls h2 {
+  text-align: center;
+}
+.polls ul {
+    margin: 0;
+    padding: 0;
+}
+.poll {
+  border: 1px solid black;
+  margin: 0;
+  padding:5px;
+}
+#poll-container {
+  display: flex;
+  flex-direction: column;
+}
+#create {
+  display: block;
+  background-color: #123478;
+  text-align: center;
+  font-size: 2rem;
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+}
+#create:hover {
+  background-color: #123467;
+}
+@media only screen and (min-width: 768px) {
+  /* For larger screen: */
+  #poll-container {
+    flex-direction: row;
+  }
+  .polls {
+    width: 50%;
+  }
+}

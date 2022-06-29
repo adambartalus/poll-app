@@ -1,12 +1,14 @@
+from datetime import datetime
+
 from flask import render_template, request, url_for, flash
 from flask_login import login_required, current_user
 from werkzeug.utils import redirect
 
 from poll.model import db
 from poll.models import PollVote, PollTitle, PollOption, Poll
-from poll.utils import poll_exists, get_vote_count
 from poll.poll import bp
 from poll.poll.forms import CreatePollForm
+from poll.utils import poll_exists, get_vote_count
 
 
 @bp.route('/poll')
@@ -14,19 +16,22 @@ def poll():
     return redirect(url_for('poll.create_poll'))
 
 
-@bp.route('/poll/<int:id_>/vote', methods=['POST'])
+@bp.route('/poll/<int:id_>', methods=['POST'])
 @login_required
 def vote_poll(id_):
     if current_user.voted_on(id_):
-        flash('You already voted on this poll')
+        flash('You have already voted on this poll', 'error')
         return redirect(url_for('poll.get_poll', id_=id_))
     choices = request.form.getlist('choice')
     if choices:
-        for choice in choices:
-            db.session.add(PollVote(poll_option_id=choice, user_id=current_user.id))
-        db.session.commit()
+        if (not Poll.query.get(id_).multiple) and len(choices) > 1:
+            flash('Multiple choices are not allowed on this poll', 'error')
+        else:
+            for choice in choices:
+                db.session.add(PollVote(poll_option_id=choice, user_id=current_user.id))
+            db.session.commit()
         return redirect(url_for('poll.get_poll', id_=id_))
-    flash('You have to select at least one option')
+    flash('You have to select at least one option', 'error')
     return redirect(url_for('poll.get_poll', id_=id_))
 
 
@@ -61,7 +66,7 @@ def create_poll():
 
         options = filter(lambda x: x.strip(), options)
 
-        new_poll = Poll(multiple=multiple)
+        new_poll = Poll(multiple=multiple, created=datetime.now())
         db.session.add(new_poll)
         db.session.flush()
 

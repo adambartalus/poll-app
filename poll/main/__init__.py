@@ -1,11 +1,11 @@
 from flask import Blueprint
 
 bp = Blueprint(
-    'poll',
+    'main',
     __name__,
     template_folder='templates',
     static_folder='static',
-    static_url_path='/poll/static'
+    static_url_path='/main/static'
 )
 
-from poll.poll import views
+from poll.main import views

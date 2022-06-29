@@ -56,7 +56,7 @@ def login():
 
             return redirect(next_url or url_for('main.index'))
 
-        flash('Invalid username or password.')
+        flash('Invalid username or password.', 'error')
 
     return render_template('login.html', form=form, next=next_)
 
@@ -73,14 +73,14 @@ def logout():
 def confirm_email(token):
     email = confirm_token(token)
     if not email:
-        flash('The confirmation link is invalid or has expired.', 'danger')
+        flash('The confirmation link is invalid or has expired.', 'error')
         return redirect(url_for('main.index'))
     user = User.query.filter_by(email=email).first_or_404()
     if user.id != current_user.id:
         flash('Wrong account')
         return redirect(url_for('main.index'))
     if user.confirmed:
-        flash('Account already confirmed. Please login.', 'success')
+        flash('Account already confirmed. Please log in.', 'success')
     else:
         user.confirmed = True
         user.confirmation_date = datetime.now()

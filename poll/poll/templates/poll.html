@@ -4,6 +4,7 @@
 
 {% block links %}
   {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('poll.static', filename='style/poll.css') }}">
 {%- endblock %}
 
 {% block head %}
@@ -20,11 +21,11 @@
 
 {% block main %}
   {{ super() }}
-  {%- with messages = get_flashed_messages() -%}
+  {%- with messages = get_flashed_messages(with_categories=True) -%}
     {% if messages -%}
-      <ul>
-        {%- for message in messages %}
-          <li>{{ message }}</li>
+      <ul class="flash-messages">
+        {%- for category, message in messages %}
+          <li class="{{ category }}">{{ message }}</li>
         {%- endfor %}
       </ul>
     {%- endif %}
@@ -35,8 +36,8 @@
     <ul>
       {%- for option in options %}
       <li>
-        <input type="{{ 'checkbox' if multiple else 'radio' }}" name="choice" value="{{ option['id'] }}">
-        {{ option['text'] }} {{ option['count'] }}
+        <input type="{{ 'checkbox' if multiple else 'radio' }}" id="option-{{ loop.index }}" name="choice" value="{{ option['id'] }}">
+        <label for="option-{{ loop.index }}">{{ option['text'] }}</label> {{ option['count'] }}
       </li>
       {%- endfor %}
     </ul>

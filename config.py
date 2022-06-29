@@ -6,8 +6,8 @@ load_dotenv()
 
 
 class Config:
-    SECRET_KEY = environ.get('SECRET_KEY')
-    WTF_CSRF_SECRET_KEY = environ.get('WTF_CSRF_SECRET_KEY')
+    SECRET_KEY = 'default'
+    WTF_CSRF_SECRET_KEY = 'def'
     SECURITY_PASSWORD_SALT = environ.get('SECURITY_PASSWORD_SALT')
     STATIC_FOLDER = 'static'
     TEMPLATES_FOLDER = 'templates'
@@ -28,11 +28,15 @@ class Config:
 class ProdConfig(Config):
     FLASK_ENV = 'production'
     DEBUG = False
+    SECRET_KEY = environ.get('PROD_SECRET_KEY')
+    WTF_CSRF_SECRET_KEY = environ.get('PROD_WTF_CSRF_SECRET_KEY')
 
 
 class DevConfig(Config):
     FLASK_ENV = 'development'
     DEBUG = True
+    SECRET_KEY = environ.get('DEV_SECRET_KEY')
+    WTF_CSRF_SECRET_KEY = environ.get('DEV_WTF_CSRF_SECRET_KEY')
 
 
 class TestConfig(Config):
