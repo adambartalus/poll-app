@@ -1,22 +1,28 @@
-.polls {
+.poll-container {
   margin: 10px;
-  border:1px solid black;
+  background-color: #faa957;
+  border-radius: 5px;
 }
-.polls h2 {
+.poll-container h2 {
   text-align: center;
 }
-.polls ul {
+.polls {
     margin: 0;
     padding: 0;
 }
 .poll {
-  border: 1px solid black;
   margin: 0;
   padding:5px;
 }
-#poll-container {
+#main-poll-container {
+  margin: 0;
+  padding: 0;
+}
+#container {
   display: flex;
   flex-direction: column;
+  margin: 0;
+  padding: 0;
 }
 #create {
   display: block;
@@ -34,10 +40,14 @@
 }
 @media only screen and (min-width: 768px) {
   /* For larger screen: */
-  #poll-container {
+  #container {
     flex-direction: row;
   }
-  .polls {
+  .poll-container {
     width: 50%;
+  }
+  #main-poll-container {
+    margin-left: 10%;
+    margin-right: 10%;
   }
 }

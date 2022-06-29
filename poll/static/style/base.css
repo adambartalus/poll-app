@@ -7,28 +7,22 @@ header {
     background-color: grey;
     padding: 5px;
 }
-h1 {
-    display: inline;
-}
-nav {
+header nav {
+    font-size: 1.5rem;
     padding-left: 30px;
     padding-right: 30px;
 }
-header nav {
-    font-size: 1.5rem;
-
+header nav a {
+    text-decoration: none;
+    color: black;
 }
 nav ul {
     display: inline-block;
     float: right;
     margin: 0;
 }
-header nav a {
-    text-decoration: none;
-    color: black;
-}
-#user-menu {
-
+h1 {
+    display: inline;
 }
 li {
     list-style-type: none;
@@ -45,8 +39,11 @@ form input {
     font-size: 1.5rem;
     box-sizing: border-box;
 }
-form input[type="text"], form input[type="password"], form input[type="email"] {
+form input[type="text"], form input[type="password"], form input[type="email"], form input[type="submit"] {
     width: 100%;
+}
+form input[type="submit"] {
+    margin-top: 5px;
 }
 form label {
     color: white;
@@ -58,11 +55,7 @@ form ul {
 form div {
     margin-top:5px;
 }
-form input[type="submit"] {
-    font-size: 1.5rem;
-    margin-top: 5px;
-    width: 100%;
-}
+/* classes */
 .auth {
     display: inline-block;
     background-color: #123456;
@@ -80,13 +73,7 @@ form input[type="submit"] {
     color: red;
     margin-bottom: 10px;
 }
-#answer_options {
-    margin: 0;
-    padding-left: 0;
-}
-#question {
-    margin-bottom: 10px;
-}
+
 .dropdown {
   position: relative;
   display: inline-block;
@@ -114,9 +101,7 @@ form input[type="submit"] {
   border: none;
   cursor: pointer;
 }
-#user-btn {
-    border-radius: 50%;
-}
+
 .dropdown-content a {
     display: block;
     padding: 10px;
@@ -124,7 +109,6 @@ form input[type="submit"] {
 .dropdown-content a:hover {
     background-color: #dddddd;
 }
-
 .show {
     display:block;
 }
@@ -139,4 +123,15 @@ form input[type="submit"] {
 .flash-messages {
   margin: 0;
   padding: 0;
+}
+/* ids */
+#user-btn {
+    border-radius: 50%;
+}
+#answer_options {
+    margin: 0;
+    padding-left: 0;
+}
+#question {
+    margin-bottom: 10px;
 }
