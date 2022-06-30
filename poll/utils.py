@@ -16,20 +16,18 @@ def get_vote_count(poll_option_id):
     return vote_count
 
 
-def custom_login_message(message='', category=''):
-    basic_message = login_manager.login_message
-    basic_message_category = login_manager.login_message_category
-    login_manager.login_message = message
-    login_manager.login_message_category = category
-
+def custom_login_message(message=None, category=None):
     def wrapper(func):
-
         @wraps(func)
         def inner(*args, **kwargs):
-            vmi = func(*args, **kwargs)
+            basic_message = login_manager.login_message
+            basic_message_category = login_manager.login_message_category
+            login_manager.login_message = message or basic_message
+            login_manager.login_message_category = category or basic_message_category
+            to_return = func(*args, **kwargs)
             login_manager.login_message = basic_message
             login_manager.login_message_category = basic_message_category
-            return vmi
+            return to_return
 
         return inner
 

@@ -17,7 +17,7 @@ def poll():
 
 
 @bp.route('/poll/<int:id_>', methods=['POST'])
-@custom_login_message(message='You have to log in to vote', category='error')
+@custom_login_message(message='You have to log in to vote')
 @login_required
 def vote_poll(id_):
     if current_user.voted_on(id_):
@@ -54,7 +54,7 @@ def get_poll(id_):
         'options': options,
         'multiple': multiple
     }
-    return render_template('poll.html', **context)
+    return render_template('poll/poll.html', **context)
 
 
 @bp.route('/poll/create', methods=['GET', 'POST'])
@@ -78,4 +78,4 @@ def create_poll():
         db.session.commit()
 
         return redirect(url_for('poll.get_poll', id_=new_poll.id))
-    return render_template('create_poll.html', form=form)
+    return render_template('poll/create_poll.html', form=form)

@@ -35,7 +35,7 @@ def register():
 
         return redirect(url_for('auth.login'))
     # GET
-    return render_template('register.html', form=form)
+    return render_template('auth/register.html', form=form)
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -58,7 +58,7 @@ def login():
 
         flash('Invalid username or password.', 'error')
 
-    return render_template('login.html', form=form, next=next_)
+    return render_template('auth/login.html', form=form, next=next_)
 
 
 @bp.route('/logout')
