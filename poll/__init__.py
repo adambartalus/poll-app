@@ -1,11 +1,10 @@
 import os
 
 from flask import Flask
-from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 
 from poll import auth, main, poll, user
-from poll.model import db, migrate, mail
+from poll.model import db, login_manager, migrate, mail
 from poll.models import User
 
 
@@ -13,7 +12,6 @@ def create_app(config='config.DevConfig'):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config)
 
-    login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.login_message_category = 'warning'
     login_manager.init_app(app)

@@ -8,7 +8,7 @@ from poll.model import db
 from poll.models import PollVote, PollTitle, PollOption, Poll
 from poll.poll import bp
 from poll.poll.forms import CreatePollForm
-from poll.utils import poll_exists, get_vote_count
+from poll.utils import poll_exists, get_vote_count, custom_login_message
 
 
 @bp.route('/poll')
@@ -17,6 +17,7 @@ def poll():
 
 
 @bp.route('/poll/<int:id_>', methods=['POST'])
+@custom_login_message(message='You have to log in to vote', category='error')
 @login_required
 def vote_poll(id_):
     if current_user.voted_on(id_):
