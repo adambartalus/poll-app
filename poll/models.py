@@ -14,6 +14,7 @@ class User(db.Model, UserMixin):
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
     confirmation_date = db.Column(db.DateTime, nullable=True)
     votes = db.relationship('PollVote', backref='user', lazy='dynamic')
+    polls = db.relationship('Poll', backref='creator')
 
     def __init__(self, username, email, password_hash):
         self.username = username
@@ -48,6 +49,7 @@ class Poll(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     multiple = db.Column(db.Boolean, default=False)
     created = db.Column(db.DateTime, default=datetime.now())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
     options = db.relationship('PollOption', backref='poll', lazy=True)
     title = db.relationship('PollTitle', backref='poll', uselist=False)
 

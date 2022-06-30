@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{%- block title -%}My polls{%- endblock -%}
+
+{% block links %}
+  {{ super() }}
+{%- endblock %}
+
+{% block head %}
+  {{ super() }}
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+{%- endblock %}
+
+{% block body %}
+  {{ super() }}
+{% endblock %}
+
+{% block main %}
+  {{ super() }}
+  <h2>Your polls</h2>
+  {% if polls -%}
+    {%- for poll in polls %}
+      <p><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></p>
+    {%- endfor %}
+  {%- else -%}
+    <p>You haven't created any polls.</p>
+  {%- endif %}
+{% endblock %}

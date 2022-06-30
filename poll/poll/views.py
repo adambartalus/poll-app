@@ -66,7 +66,7 @@ def create_poll():
 
         options = filter(lambda x: x.strip(), options)
 
-        new_poll = Poll(multiple=multiple, created=datetime.now())
+        new_poll = Poll(multiple=multiple, created=datetime.now(), user_id=current_user.id)
         db.session.add(new_poll)
         db.session.flush()
 

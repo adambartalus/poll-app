@@ -1,77 +1,85 @@
 body {
-    background-color: #F5F5DC;
-    font-family: sans-serif;
-    margin: 0;
-}
-header {
-    background-color: grey;
-    padding: 5px;
-}
-header nav {
-    font-size: 1.5rem;
-    padding-left: 30px;
-    padding-right: 30px;
-}
-header nav a {
-    text-decoration: none;
-    color: black;
-}
-nav ul {
-    display: inline-block;
-    float: right;
-    margin: 0;
+  background-color: #F5F5DC;
+  font-family: sans-serif;
+  margin: 0;
 }
 h1 {
-    display: inline;
+  margin: 0;
+}
+header {
+  background-color: grey;
+  padding: 5px;
+}
+header nav {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5rem;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+header nav a {
+  text-decoration: none;
+  color: black;
+}
+header nav ul {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+header nav li {
+  display: inline-block;
+}
+h1 {
+  display: inline;
 }
 li {
-    list-style-type: none;
-    margin-bottom: 5px;
+  list-style-type: none;
+  margin-bottom: 5px;
 }
 form {
-    background-color: #123456;
-    border-radius: 5px;
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 10px;
+  background-color: #123456;
+  border-radius: 5px;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 10px;
 }
 form input {
-    font-size: 1.5rem;
-    box-sizing: border-box;
+  font-size: 1.5rem;
+  box-sizing: border-box;
 }
 form input[type="text"], form input[type="password"], form input[type="email"], form input[type="submit"] {
-    width: 100%;
+  width: 100%;
 }
 form input[type="submit"] {
-    margin-top: 5px;
+  margin-top: 5px;
 }
 form label {
-    color: white;
+  color: white;
 }
 form ul {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 form div {
-    margin-top:5px;
+  margin-top:5px;
 }
 /* classes */
 .auth {
-    display: inline-block;
-    background-color: #123456;
-    padding: 5px;
-    border-radius: 5px;
+  display: inline-block;
+  background-color: #123456;
+  padding: 5px;
+  border-radius: 5px;
 }
 .auth a {
-    color: white;
+  color: white;
 }
 .input-error {
-    border-color: red;
+  border-color: red;
 }
 .error-message {
-    display: block;
-    color: red;
-    margin-bottom: 10px;
+  display: block;
+  color: red;
+  margin-bottom: 10px;
 }
 
 .dropdown {
@@ -90,35 +98,39 @@ form div {
   z-index: 1;
 }
 .dropdown-content span {
-    margin: 0;
-    white-space: nowrap;
+  margin: 0;
+  white-space: nowrap;
 }
 .dropbtn {
   background-color: #123456;
   color: white;
-  padding: 16px;
+  padding: 5px;
   font-size: 16px;
   border: none;
   cursor: pointer;
 }
 
 .dropdown-content a {
-    display: block;
-    padding: 10px;
+  display: block;
+  padding: 10px;
 }
 .dropdown-content a:hover {
-    background-color: #dddddd;
+  background-color: #dddddd;
 }
 .show {
-    display:block;
+  display:block;
 }
-.error {
+.flash-message {
+  padding: 10px 30px;
+}
+.error, .danger {
   background-color: #f56c6c;
-  padding: 10px;
+}
+.warning {
+  background-color: #eed202;
 }
 .success {
   background-color: #9cfa98;
-  padding: 10px;
 }
 .flash-messages {
   margin: 0;
@@ -126,12 +138,14 @@ form div {
 }
 /* ids */
 #user-btn {
-    border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 #answer_options {
-    margin: 0;
-    padding-left: 0;
+  margin: 0;
+  padding-left: 0;
 }
 #question {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }

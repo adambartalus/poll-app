@@ -21,15 +21,6 @@
 
 {% block main %}
   {{ super() }}
-  {%- with messages = get_flashed_messages(with_categories=True) -%}
-    {% if messages -%}
-      <ul class="flash-messages">
-        {%- for category, message in messages %}
-          <li class="{{ category }}">{{ message }}</li>
-        {%- endfor %}
-      </ul>
-    {%- endif %}
-  {%- endwith %}
   <h2>{{ title }}</h2>
   <form action="{{ url_for('poll.vote_poll', id_=poll_id) }}" method="post">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

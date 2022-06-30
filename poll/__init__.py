@@ -5,7 +5,7 @@ from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 
 from poll import auth, main, poll, user
-from poll.model import db, mail
+from poll.model import db, migrate, mail
 from poll.models import User
 
 
@@ -15,12 +15,14 @@ def create_app(config='config.DevConfig'):
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
+    login_manager.login_message_category = 'warning'
     login_manager.init_app(app)
 
     csrf = CSRFProtect()
     csrf.init_app(app)
 
     db.init_app(app)
+    migrate.init_app(app, db)
     mail.init_app(app)
 
     @login_manager.user_loader

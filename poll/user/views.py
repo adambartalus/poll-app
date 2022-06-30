@@ -9,3 +9,10 @@ from poll.user import bp
 def voted_polls():
     polls = current_user.get_voted_polls()
     return render_template('voted_polls.html', polls=polls)
+
+
+@bp.route('my-polls')
+@login_required
+def my_polls():
+    polls = current_user.polls
+    return render_template('my_polls.html', polls=polls)

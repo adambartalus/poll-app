@@ -1,18 +1,20 @@
 .poll-container {
   margin: 10px;
-  background-color: #faa957;
+  background-color: #fce090;
   border-radius: 5px;
 }
 .poll-container h2 {
   text-align: center;
+  border-bottom: 3px solid black;
 }
 .polls {
-    margin: 0;
-    padding: 0;
-}
-.poll {
+  width: 100%;
+  text-align: center;
   margin: 0;
-  padding:5px;
+  padding: 0;
+}
+.poll td, th{
+  padding-bottom: 10px;
 }
 #main-poll-container {
   margin: 0;
@@ -21,6 +23,7 @@
 #container {
   display: flex;
   flex-direction: column;
+  width: 100%;
   margin: 0;
   padding: 0;
 }
@@ -45,9 +48,10 @@
   }
   .poll-container {
     width: 50%;
+    border-radius: 5px 5px 0 0;
   }
   #main-poll-container {
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 15%;
+    margin-right: 15%;
   }
 }
