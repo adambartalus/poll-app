@@ -1,5 +1,6 @@
 from flask import Blueprint
 
+from poll.user import views
 
 bp = Blueprint(
     'user',
@@ -9,4 +10,5 @@ bp = Blueprint(
     url_prefix='/user'
 )
 
-from poll.user import views
+bp.add_url_rule('voted-polls', view_func=views.voted_polls)
+bp.add_url_rule('my-polls', view_func=views.my_polls)

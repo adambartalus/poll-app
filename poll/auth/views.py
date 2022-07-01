@@ -4,16 +4,14 @@ from flask import redirect, render_template, url_for, flash, request, abort
 from flask_login import login_required, login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from poll.auth import bp
 from poll.auth.forms import RegisterForm, LoginForm
 from poll.email import send_email
-from poll.model import db
+from poll.extensions import db
 from poll.models import User
 from poll.safe_redirect import is_safe_url
 from poll.token import generate_confirmation_token, confirm_token
 
 
-@bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
     # POST
@@ -38,7 +36,6 @@ def register():
     return render_template('auth/register.html', form=form)
 
 
-@bp.route('/login', methods=['GET', 'POST'])
 def login():
     next_ = request.args.get('next')
     form = LoginForm()
@@ -61,14 +58,12 @@ def login():
     return render_template('auth/login.html', form=form, next=next_)
 
 
-@bp.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
 
 
-@bp.route('/confirm/<token>')
 @login_required
 def confirm_email(token):
     email = confirm_token(token)

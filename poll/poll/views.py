@@ -4,19 +4,16 @@ from flask import render_template, request, url_for, flash
 from flask_login import login_required, current_user
 from werkzeug.utils import redirect
 
-from poll.model import db
+from poll.extensions import db
 from poll.models import PollVote, PollTitle, PollOption, Poll
-from poll.poll import bp
 from poll.poll.forms import CreatePollForm
 from poll.utils import poll_exists, get_vote_count, custom_login_message
 
 
-@bp.route('/poll')
 def poll():
     return redirect(url_for('poll.create_poll'))
 
 
-@bp.route('/poll/<int:id_>', methods=['POST'])
 @custom_login_message(message='You have to log in to vote')
 @login_required
 def vote_poll(id_):
@@ -36,7 +33,6 @@ def vote_poll(id_):
     return redirect(url_for('poll.get_poll', id_=id_))
 
 
-@bp.route('/poll/<int:id_>')
 def get_poll(id_):
     if not poll_exists(id_):
         return redirect(url_for('main.index'))
@@ -57,7 +53,6 @@ def get_poll(id_):
     return render_template('poll/poll.html', **context)
 
 
-@bp.route('/poll/create', methods=['GET', 'POST'])
 def create_poll():
     form = CreatePollForm()
     if form.validate_on_submit():

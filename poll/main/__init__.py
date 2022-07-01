@@ -1,5 +1,7 @@
 from flask import Blueprint
 
+from . import views
+
 bp = Blueprint(
     'main',
     __name__,
@@ -8,4 +10,4 @@ bp = Blueprint(
     static_url_path='/main/static'
 )
 
-from poll.main import views
+bp.add_url_rule('/', view_func=views.index)

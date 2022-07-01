@@ -2,7 +2,7 @@ import pytest
 from werkzeug.security import generate_password_hash
 
 from poll import create_app
-from poll.model import db
+from poll.extensions import db
 from poll.models import User
 
 

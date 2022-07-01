@@ -4,7 +4,7 @@ from flask import Flask
 from flask_wtf.csrf import CSRFProtect
 
 from poll import auth, main, poll, user
-from poll.model import db, login_manager, migrate, mail
+from poll.extensions import db, login_manager, migrate, mail
 from poll.models import User
 
 

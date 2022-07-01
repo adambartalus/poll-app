@@ -1,4 +1,4 @@
-from poll.model import db
+from poll.extensions import db
 from poll.models import Poll, PollTitle, PollOption
 from poll.utils import poll_exists
 

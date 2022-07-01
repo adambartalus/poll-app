@@ -2,7 +2,7 @@ from datetime import datetime
 
 from flask_login import UserMixin
 
-from poll.model import db
+from poll.extensions import db
 
 
 class User(db.Model, UserMixin):

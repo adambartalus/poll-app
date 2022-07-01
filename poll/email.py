@@ -3,7 +3,7 @@ from threading import Thread
 from flask import current_app
 from flask_mail import Message
 
-from poll.model import mail
+from poll.extensions import mail
 
 
 def async_(f):

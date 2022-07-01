@@ -1,6 +1,6 @@
 from functools import wraps
 
-from poll.model import login_manager
+from poll.extensions import login_manager
 from poll.models import Poll, PollVote
 
 

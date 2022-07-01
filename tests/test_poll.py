@@ -1,7 +1,7 @@
 import pytest
 from urllib.parse import urlparse
 
-from poll.model import db
+from poll.extensions import db
 from poll.models import Poll, PollTitle
 
 
