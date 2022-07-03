@@ -1,7 +1,6 @@
 import pytest
 from urllib.parse import urlparse
 
-from poll.extensions import db
 from poll.models import Poll, PollTitle
 
 
@@ -16,7 +15,7 @@ def test_index(client, auth):
 
 
 @pytest.mark.parametrize('path', (
-    '/poll/1/vote',
+    '/poll/1',
 ))
 def test_login_required(client, path):
     response = client.post(path)
@@ -75,6 +74,14 @@ def test_vote_poll(auth, client, app):
             'answer_options-2': '9',
         }
     )
+    response = client.post(
+        '/poll/1',
+        data={
+            'choice': '1'
+        },
+        follow_redirects=True
+    )
+    assert b'You have to log in to vote' in response.data
     auth.login()
     response = client.post(
         '/poll/1',
@@ -84,3 +91,11 @@ def test_vote_poll(auth, client, app):
         follow_redirects=True
     )
     assert b'Multiple choices are not allowed on this poll' in response.data
+    response = client.post(
+        '/poll/1',
+        data={
+            'choice': '2'
+        },
+        follow_redirects=True
+    )
+    assert b'You have successfully voted on this poll' in response.data

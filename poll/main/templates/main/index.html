@@ -17,36 +17,28 @@
     <div id="container">
       <div class="poll-container" id="most-popular-poll-container">
         <h2>Most popular polls</h2>
-        <table class="polls">
-          <tr>
-            <th>Title</th>
-            <th>Votes</th>
-          </tr>
+        <ul class="polls">
           {% for poll in most_popular_polls %}
-            <tr class="poll">
-              <td><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></td>
-              <td>{{ poll.get_vote_count() }}</td>
-            </tr>
+            <li class="poll">
+              <span class="title"><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></span>
+              <span class="vote-count">{{ poll.get_vote_count() }}</span>
+            </li>
           {% endfor %}
-        </table>
+        </ul>
       </div>
       <div class="poll-container" id="most-recent-poll-container">
         <h2>Most recent polls</h2>
-        <table class="polls">
-          <tr>
-            <th>Title</th>
-            <th>Created</th>
-          </tr>
+        <ul class="polls">
           {% for poll in most_recent_polls %}
-            <tr class="poll">
-              <td><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></td>
-              <td>{{ poll.created.replace(microsecond=0) }}</td>
-            </tr>
+            <li class="poll">
+              <span class="title"><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></span>
+              <span class="created">{{ poll.created.strftime('%Y-%m-%d %H:%M') }}</span>
+            </li>
           {% endfor %}
-        </table>
+        </ul>
       </div>
     </div>
-    <a id="create" href="{{ url_for('poll.create_poll') }}">Create a poll</a>
+    <a id="create" class="blue-bg" href="{{ url_for('poll.create_poll') }}">Create a poll</a>
   </div>
 {%- endblock %}
 

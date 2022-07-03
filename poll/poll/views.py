@@ -1,13 +1,11 @@
-from datetime import datetime
-
-from flask import render_template, request, url_for, flash
+from flask import render_template, request, url_for, flash, current_app
 from flask_login import login_required, current_user
 from werkzeug.utils import redirect
 
 from poll.extensions import db
-from poll.models import PollVote, PollTitle, PollOption, Poll
+from poll.models import PollVote, PollTitle, Poll
 from poll.poll.forms import CreatePollForm
-from poll.utils import poll_exists, get_vote_count, custom_login_message
+from poll.utils import poll_exists, custom_login_message, add_poll
 
 
 def poll():
@@ -28,6 +26,7 @@ def vote_poll(id_):
             for choice in choices:
                 db.session.add(PollVote(poll_option_id=choice, user_id=current_user.id))
             db.session.commit()
+            flash('You have successfully voted on this poll', 'success')
         return redirect(url_for('poll.get_poll', id_=id_))
     flash('You have to select at least one option', 'error')
     return redirect(url_for('poll.get_poll', id_=id_))
@@ -42,7 +41,7 @@ def get_poll(id_):
     options = poll_.options
     multiple = poll_.multiple
 
-    options = map(lambda x: {'id': x.id, 'text': x.text, 'count': get_vote_count(x.id)}, options)
+    options = map(lambda x: {'id': x.id, 'text': x.text}, options)
 
     context = {
         'poll_id': id_,
@@ -53,6 +52,12 @@ def get_poll(id_):
     return render_template('poll/poll.html', **context)
 
 
+def get_poll_result(id_):
+    poll_ = Poll.query.get(id_)
+
+    return render_template('poll/poll_result.html', poll=poll_)
+
+
 def create_poll():
     form = CreatePollForm()
     if form.validate_on_submit():
@@ -61,16 +66,7 @@ def create_poll():
         multiple = form.multiple_choices.data
 
         options = filter(lambda x: x.strip(), options)
+        id_ = add_poll(current_app, title, options, multiple)
 
-        new_poll = Poll(multiple=multiple, created=datetime.now(), user_id=current_user.id)
-        db.session.add(new_poll)
-        db.session.flush()
-
-        db.session.add(PollTitle(poll_id=new_poll.id, text=title))
-
-        for option in options:
-            db.session.add(PollOption(poll_id=new_poll.id, text=option))
-        db.session.commit()
-
-        return redirect(url_for('poll.get_poll', id_=new_poll.id))
+        return redirect(url_for('poll.get_poll', id_=id_))
     return render_template('poll/create_poll.html', form=form)

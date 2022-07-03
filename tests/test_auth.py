@@ -1,8 +1,12 @@
+from time import sleep
+
 from flask_login import current_user
 import pytest
 from urllib.parse import urlparse
 
-from poll.token import generate_confirmation_token
+from itsdangerous import SignatureExpired
+
+from poll.token import generate_confirmation_token, confirm_token
 from poll.models import User
 
 
@@ -174,7 +178,30 @@ def test_confirm_token(auth, client, app):
         f'/confirm/{token}',
         follow_redirects=True
     )
-    assert b'Account already confirmed. Please login.' in response.data
+    assert b'Account already confirmed. Please log in.' in response.data
     with app.app_context():
         user = User.query.filter_by(email=test_email).first()
         assert user.confirmed
+
+
+def test_confirm_token_expired(auth, client, app):
+    test_email = 'test1@test1.com'
+    client.post(
+        '/register',
+        data={
+            'username': 'b',
+            'email': test_email,
+            'password': '12345678',
+            'confirm_password': '12345678'
+        }
+    )
+    with app.app_context():
+        user = User.query.filter_by(username='b').first()
+        assert not user.confirmed
+        token = generate_confirmation_token(test_email)
+
+        sleep(5)
+        assert not confirm_token(token, 4)
+
+
+

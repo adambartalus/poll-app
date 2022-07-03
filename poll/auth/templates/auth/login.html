@@ -30,5 +30,8 @@
     {{ form.password }} <br>
     {{ form.submit }}
     <input type="hidden" name="next" value="{{ next if next else '' }}">
+    <div id="register">
+      Don't have an account yet? <a href="{{ url_for('auth.register') }}">Register.</a>
+    </div>
   </form>
 {%- endblock %}

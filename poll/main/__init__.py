@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from . import views
+from poll.main import views
 
 bp = Blueprint(
     'main',

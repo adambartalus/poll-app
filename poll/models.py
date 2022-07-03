@@ -68,6 +68,10 @@ class Poll(db.Model):
     def get_vote_count(self):
         return sum(map(lambda x: x.get_vote_count(), self.options))
 
+    def get_votes_of(self, user):
+        votes = filter(lambda x: x.has_voted_on(user), self.options)
+        return votes
+
 
 class PollTitle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -83,6 +87,12 @@ class PollOption(db.Model):
 
     def get_vote_count(self):
         return len(self.votes)
+
+    def has_voted_on(self, user):
+        for vote in self.votes:
+            if vote.user_id == user.id:
+                return True
+        return False
 
 
 class PollVote(db.Model):

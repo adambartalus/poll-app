@@ -21,17 +21,18 @@
 
 {% block main %}
   {{ super() }}
-  <h2>{{ title }}</h2>
   <form action="{{ url_for('poll.vote_poll', id_=poll_id) }}" method="post">
+    <h2>{{ title }}</h2>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <ul>
       {%- for option in options %}
       <li>
         <input type="{{ 'checkbox' if multiple else 'radio' }}" id="option-{{ loop.index }}" name="choice" value="{{ option['id'] }}">
-        <label for="option-{{ loop.index }}">{{ option['text'] }}</label> {{ option['count'] }}
+        <label for="option-{{ loop.index }}">{{ option['text'] }}</label>
       </li>
       {%- endfor %}
     </ul>
     <input type="submit" value="Vote">
+    <a href="{{ url_for('poll.get_poll_result', id_=poll_id) }}" id="result">Result</a>
   </form>
 {% endblock %}

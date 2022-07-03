@@ -1,0 +1,48 @@
+.result {
+  position: relative;
+  background-color: #fce090;
+  border-radius: 3px;
+  font-size: 1.5rem;
+  max-width: 500px;
+  padding: 10px;
+}
+.result h2 {
+  border-bottom: 2px solid black;
+  color: black;
+  margin: 0;
+}
+.options {
+  margin: 0;
+  padding: 0;
+}
+.option {
+  margin: 0;
+  padding: 10px 0;
+  border-bottom: 1px solid black;
+}
+.option:last-child {
+  border-bottom: none;
+}
+footer {
+  border-top: 2px solid black;
+  margin: 0;
+  padding: 5px 0;
+}
+.created {
+  font-size: 0.8rem;
+}
+.vote-count {
+  float: right;
+}
+.vote-count:after {
+  content: ' Votes'
+}
+#vote {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: white;
+  text-decoration: none;
+  border-radius: inherit;
+  padding: 5px;
+}

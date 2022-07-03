@@ -1,13 +1,20 @@
 body {
-  background-color: #F5F5DC;
+  background-color: #5F5F53;
   font-family: sans-serif;
   margin: 0;
 }
 h1 {
   margin: 0;
+  display: inline;
+}
+h1 a {
+  color: black;
+}
+h2 {
+  color: white;
 }
 header {
-  background-color: grey;
+  background-color: #999999;
   padding: 5px;
 }
 header nav {
@@ -19,7 +26,6 @@ header nav {
 }
 header nav a {
   text-decoration: none;
-  color: black;
 }
 header nav ul {
   display: inline-block;
@@ -29,8 +35,8 @@ header nav ul {
 header nav li {
   display: inline-block;
 }
-h1 {
-  display: inline;
+main {
+  padding: 10px;
 }
 li {
   list-style-type: none;
@@ -66,7 +72,6 @@ form div {
 /* classes */
 .auth {
   display: inline-block;
-  background-color: #123456;
   padding: 5px;
   border-radius: 5px;
 }
@@ -117,11 +122,18 @@ form div {
 .dropdown-content a:hover {
   background-color: #dddddd;
 }
+.blue-bg {
+  background-color: #123478;
+}
+.blue-bg:hover {
+  background-color: #123456;
+}
 .show {
   display:block;
 }
 .flash-message {
   padding: 10px 30px;
+  margin: 0;
 }
 .error, .danger {
   background-color: #f56c6c;

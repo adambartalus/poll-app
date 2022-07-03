@@ -1,19 +1,16 @@
+from datetime import datetime
 from functools import wraps
 
-from poll.extensions import login_manager
-from poll.models import Poll, PollVote
+from flask_login import current_user
+
+from poll.extensions import login_manager, db
+from poll.models import Poll, PollOption, PollTitle
 
 
 def poll_exists(id_):
     poll = Poll.query.get(id_)
 
     return poll is not None
-
-
-def get_vote_count(poll_option_id):
-    vote_count = PollVote.query.filter_by(poll_option_id=poll_option_id).count()
-
-    return vote_count
 
 
 def custom_login_message(message=None, category=None):
@@ -32,3 +29,18 @@ def custom_login_message(message=None, category=None):
         return inner
 
     return wrapper
+
+
+def add_poll(app, title, options, multiple):
+    with app.app_context():
+        user_id = current_user.id if (current_user and current_user.is_authenticated) else None
+        new_poll = Poll(multiple=multiple, created=datetime.now(), user_id=user_id)
+        db.session.add(new_poll)
+        db.session.flush()
+
+        db.session.add(PollTitle(poll_id=new_poll.id, text=title))
+
+        for option in options:
+            db.session.add(PollOption(poll_id=new_poll.id, text=option))
+        db.session.commit()
+        return new_poll.id

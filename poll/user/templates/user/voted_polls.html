@@ -4,6 +4,7 @@
 
 {% block links %}
   {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('user.static', filename='style/common.css') }}">
 {%- endblock %}
 
 {% block head %}
@@ -20,12 +21,39 @@
 
 {% block main %}
   {{ super() }}
-  <h2>Your voted polls</h2>
-  {% if polls -%}
-    {%- for poll in polls %}
-      <p><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></p>
-    {%- endfor %}
-  {%- else -%}
-    <p>You haven't voted on any polls.</p>
-  {%- endif %}
+  <div id="voted-polls" class="polls">
+    <h2>Your voted polls</h2>
+      {% if polls -%}
+        <table>
+          <tr>
+            <th>Title</th>
+            <th>Your vote(s)</th>
+            <th>Votes</th>
+            <th>Created</th>
+          </tr>
+          {%- for poll in polls %}
+            <tr>
+              <td>
+                <a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a>
+              </td>
+              <td>
+                <ul>
+                  {% for vote in poll.get_votes_of(current_user) %}
+                      <li>{{ vote.text }}</li>
+                  {% endfor %}
+                </ul>
+              </td>
+              <td class="vote">
+                {{ poll.get_vote_count() }}
+              </td>
+              <td class="created">
+                {{ poll.created.strftime("%Y-%m-%d %H:%M") }}
+              </td>
+            </tr>
+          {%- endfor %}
+        </table>
+      {%- else -%}
+        <p>You haven't voted on any polls.</p>
+      {%- endif %}
+  </div>
 {% endblock %}

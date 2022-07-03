@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from . import views
+from poll.auth import views
 
 bp = Blueprint(
     'auth',

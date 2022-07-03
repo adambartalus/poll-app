@@ -1,0 +1,18 @@
+.polls {
+  background-color: #fce090;
+  padding: 10px;
+  width: fit-content;
+  border-radius: 5px;
+  max-width: 800px;
+}
+h2 {
+  color: black;
+  border-bottom: 2px solid black;
+  margin-bottom: 0;
+}
+.vote, .created {
+  text-align: center;
+}
+th {
+  padding: 10px;
+}
