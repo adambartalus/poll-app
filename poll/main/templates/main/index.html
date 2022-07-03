@@ -21,7 +21,8 @@
           {% for poll in most_popular_polls %}
             <li class="poll">
               <span class="title"><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></span>
-              <span class="vote-count">{{ poll.get_vote_count() }}</span>
+              {% set c = poll.get_vote_count() %}
+              <span class="vote-count">{{ c }} {{ 'Votes' if c > 1 else 'Vote' }}</span>
             </li>
           {% endfor %}
         </ul>

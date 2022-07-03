@@ -19,9 +19,14 @@
 .poll {
   margin: 0;
   padding: 10px 0;
+  border-bottom: 1px solid black;
+}
+.poll:last-child {
+  border-bottom: none;
 }
 .poll a {
   word-break: break-all;
+  color: black;
 }
 .poll td, th{
   padding-bottom: 10px;
@@ -29,9 +34,6 @@
 .vote-count, .created {
   float: right;
   height: auto;
-}
-.vote-count:after {
-  content: ' Votes';
 }
 .title {
   display: inline-block;
@@ -69,7 +71,7 @@
     border-radius: 5px 5px 0 0;
   }
   #main-poll-container {
-    margin-left: 15%;
-    margin-right: 15%;
+    margin-left: 12%;
+    margin-right: 12%;
   }
 }

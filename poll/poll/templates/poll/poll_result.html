@@ -23,13 +23,15 @@
     {% for option in poll.options %}
       <li class="option">
         <span>{{ option.text }}</span>
-        <span class="vote-count">{{ option.get_vote_count() }}</span>
+        {% set c = option.get_vote_count() %}
+        <span class="vote-count">{{ c }} {{ 'Votes' if c > 1 else 'Vote' }}</span>
       </li>
     {% endfor %}
     </ul>
     <footer>
       <span class="created">Created {{ poll.created.strftime('%Y-%m-%d %H:%M') }}</span>
-      <span class="vote-count">{{ poll.get_vote_count() }}</span>
+      {% set c = poll.get_vote_count() %}
+      <span class="vote-count">{{ c }} {{ 'Votes' if c > 1 else 'Vote' }}</span>
     </footer>
   </div>
 {% endblock %}

@@ -1,10 +1,11 @@
+from datetime import datetime
 from time import sleep
 
 from flask_login import current_user
 import pytest
 from urllib.parse import urlparse
 
-from itsdangerous import SignatureExpired
+from werkzeug.security import check_password_hash
 
 from poll.token import generate_confirmation_token, confirm_token
 from poll.models import User
@@ -24,7 +25,16 @@ def test_register(client, app):
     assert response.status_code == 302
     assert urlparse(response.headers["Location"]).path == '/login'
     with app.app_context():
-        assert User.query.filter_by(username='a').first() is not None
+        user = User.query.filter_by(username='a').first()
+        assert user.username == 'a'
+        assert user.email == 'test@test.com'
+        assert not user.confirmed
+        assert not user.confirmation_date
+        assert (datetime.now() - user.registration_date).total_seconds() < 10
+        assert len(list(user.votes)) == 0
+        assert len(list(user.polls)) == 0
+        assert check_password_hash(user.password_hash, '12345678')
+
         assert User.query.filter_by(username='b').first() is None
 
 
@@ -65,10 +75,10 @@ def test_login(client, auth):
         assert current_user.username == 'test'
 
 
-@pytest.mark.parametrize(('next_'), (
-    ('/user/voted-polls'),
-    ('/poll/1'),
-    ('/polls')
+@pytest.mark.parametrize('next_', (
+    '/user/voted-polls',
+    '/poll/1',
+    '/polls'
 ))
 def test_login_with_next(client, next_):
     response = client.get(f'/login?next={next_}')
@@ -78,10 +88,10 @@ def test_login_with_next(client, next_):
     assert b in response.data
 
 
-@pytest.mark.parametrize(('next_'), (
-    ('/user/voted-polls'),
-    ('/poll/1'),
-    ('/polls')
+@pytest.mark.parametrize('next_', (
+    '/user/voted-polls',
+    '/poll/1',
+    '/polls'
 ))
 def test_login_safe_redirect(auth, next_):
     response = auth.login(next=next_)
@@ -90,10 +100,10 @@ def test_login_safe_redirect(auth, next_):
     assert urlparse(response.headers['Location']).path == next_
 
 
-@pytest.mark.parametrize(('next_'), (
-    ('https://www.facebook.com/'),
-    ('https://www.youtube.com/'),
-    ('https://www.vmi.com/3')
+@pytest.mark.parametrize('next_', (
+    'https://www.facebook.com/',
+    'https://www.youtube.com/',
+    'https://www.vmi.com/3'
 ))
 def test_login_not_safe_redirect(auth, next_):
     response = auth.login(next=next_)
@@ -202,6 +212,3 @@ def test_confirm_token_expired(auth, client, app):
 
         sleep(5)
         assert not confirm_token(token, 4)
-
-
-

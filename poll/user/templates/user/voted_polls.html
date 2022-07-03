@@ -27,27 +27,27 @@
         <table>
           <tr>
             <th>Title</th>
-            <th>Your vote(s)</th>
             <th>Votes</th>
             <th>Created</th>
+            <th>Your vote(s)</th>
           </tr>
           {%- for poll in polls %}
             <tr>
               <td>
                 <a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a>
               </td>
-              <td>
-                <ul>
-                  {% for vote in poll.get_votes_of(current_user) %}
-                      <li>{{ vote.text }}</li>
-                  {% endfor %}
-                </ul>
-              </td>
               <td class="vote">
                 {{ poll.get_vote_count() }}
               </td>
               <td class="created">
                 {{ poll.created.strftime("%Y-%m-%d %H:%M") }}
+              </td>
+              <td>
+                <ul class="votes">
+                  {% for vote in poll.get_votes_of(current_user) %}
+                      <li>{{ vote.text }}</li>
+                  {% endfor %}
+                </ul>
               </td>
             </tr>
           {%- endfor %}

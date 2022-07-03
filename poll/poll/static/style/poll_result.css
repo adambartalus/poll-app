@@ -5,6 +5,7 @@
   font-size: 1.5rem;
   max-width: 500px;
   padding: 10px;
+  margin: 0 auto;
 }
 .result h2 {
   border-bottom: 2px solid black;
@@ -33,9 +34,6 @@ footer {
 }
 .vote-count {
   float: right;
-}
-.vote-count:after {
-  content: ' Votes'
 }
 #vote {
   position: absolute;
