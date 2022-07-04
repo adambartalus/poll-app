@@ -19,36 +19,36 @@
 {%- endblock %}
 
 {% block main %}
-  {{ super() }}
-  <form action="{{ url_for('poll.create_poll') }}" method="post" novalidate>
-    {{ form.csrf_token }}
-    <div>
-      {{ form.title.label }} <br>
-      {{ form.title }}
-      {% if form.title.errors -%}
-        <span class="error-message">{{ form.title.errors[0] }}</span>
-      {%- else -%}
-        <br>
-      {%- endif %}
-    </div>
-    <div>
-      <label>Answer options</label> <br>
-      <ul id="{{ form.answer_options.id }}">
-        {%- for option in form.answer_options %}
-        <li>
-          {{ option.label }}
-          {{ option }}
-        </li>
-        {%- endfor %}
-      </ul>
-      {%- if form.answer_options.errors %}
-        <span class="error-message">{{ form.answer_options.errors[0] }}</span>
-      {% endif %}
-    </div>
-    <div>
-      {{ form.multiple_choices }}
-      {{ form.multiple_choices.label }} <br>
-    </div>
-    {{ form.submit }}
-  </form>
-{% endblock %}
+    {{ super() -}}
+    <form action="{{ url_for('poll.create_poll') }}" method="post" novalidate>
+      {{ form.csrf_token }}
+      <div>
+        {{ form.title.label }} <br>
+        {{ form.title }}
+        {% if form.title.errors -%}
+          <span class="error-message">{{ form.title.errors[0] }}</span>
+        {%- else -%}
+          <br>
+        {%- endif %}
+      </div>
+      <div>
+        <label>Answer options</label> <br>
+        <ul id="{{ form.answer_options.id }}">
+          {%- for option in form.answer_options %}
+          <li>
+            {{ option.label }}
+            {{ option }}
+          </li>
+          {%- endfor %}
+        </ul>
+        {% if form.answer_options.errors -%}
+          <span class="error-message">{{ form.answer_options.errors[0] }}</span>
+        {%- endif %}
+      </div>
+      <div>
+        {{ form.multiple_choices }}
+        {{ form.multiple_choices.label }} <br>
+      </div>
+      {{ form.submit }}
+    </form>
+{%- endblock %}

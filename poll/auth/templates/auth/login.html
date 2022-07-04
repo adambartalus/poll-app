@@ -20,25 +20,25 @@
 {%- endblock %}
 
 {% block main %}
-  <h2>Log in</h2>
-  {{ super() }}
-  <form action="{{ url_for('auth.login') }}" method="post" novalidate>
-    {{ form.csrf_token }}
-    <div>
-      {{ form.username.label }} <br>
-      {{ form.username }} <br>
-    </div>
-    <div>
-      {{ form.password.label }} <br>
-      {{ form.password }} <br>
-    </div>
-    {{ form.submit }}
-    <input type="hidden" name="next" value="{{ next if next else '' }}">
-    <div id="register-acc">
-      Don't have an account yet? <a href="{{ url_for('auth.register') }}">Register.</a>
-    </div>
-    <div id="forgot-pw">
-      <a href="{{ url_for('auth.password_reset_email') }}">Forgot your password?</a>
-    </div>
-  </form>
+    {{ super() -}}
+    <h2>Log in</h2>
+    <form action="{{ url_for('auth.login') }}" method="post" novalidate>
+      {{ form.csrf_token }}
+      <div>
+        {{ form.username.label }} <br>
+        {{ form.username }} <br>
+      </div>
+      <div>
+        {{ form.password.label }} <br>
+        {{ form.password }} <br>
+      </div>
+      {{ form.submit }}
+      <input type="hidden" name="next" value="{{ next if next else '' }}">
+      <div id="register-acc">
+        Don't have an account yet? <a href="{{ url_for('auth.register') }}">Register.</a>
+      </div>
+      <div id="forgot-pw">
+        <a href="{{ url_for('auth.password_reset_email') }}">Forgot your password?</a>
+      </div>
+    </form>
 {%- endblock %}

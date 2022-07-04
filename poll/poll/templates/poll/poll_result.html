@@ -16,22 +16,27 @@
 {%- endblock %}
 
 {% block main %}
-  <div class="result">
-    <h2>{{ poll.title.text }}</h2>
-    <a href="{{ url_for('poll.get_poll', id_=poll.id) }}" id="vote" class="blue-bg">Back to vote</a>
-    <ul class="options">
-    {% for option in poll.options %}
-      <li class="option">
-        <span>{{ option.text }}</span>
-        {% set c = option.get_vote_count() %}
+    {{ super() -}}
+    <div class="result">
+      <h2>{{ poll.title.text }}</h2>
+      <a href="{{ url_for('poll.get_poll', id_=poll.id) }}" id="vote" class="blue-bg">Back to vote</a>
+      <ul class="options">
+      {%- for option in poll.options %}
+        <li class="option">
+          <span>{{ option.text }}</span>
+          {% set c = option.get_vote_count() -%}
+          <span class="vote-count">{{ c }} {{ 'Votes' if c > 1 else 'Vote' }}</span>
+        </li>
+      {%- endfor %}
+      </ul>
+      <footer>
+        <span class="created">Created {{ poll.created.strftime('%Y-%m-%d %H:%M') }}</span>
+        {% set c = poll.get_vote_count() -%}
         <span class="vote-count">{{ c }} {{ 'Votes' if c > 1 else 'Vote' }}</span>
-      </li>
-    {% endfor %}
-    </ul>
-    <footer>
-      <span class="created">Created {{ poll.created.strftime('%Y-%m-%d %H:%M') }}</span>
-      {% set c = poll.get_vote_count() %}
-      <span class="vote-count">{{ c }} {{ 'Votes' if c > 1 else 'Vote' }}</span>
-    </footer>
-  </div>
+      </footer>
+    </div>
+{%- endblock %}
+
+{% block body %}
+  {{ super() }}
 {% endblock %}

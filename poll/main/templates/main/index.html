@@ -11,44 +11,44 @@
   {{ super() }}
 {% endblock %}
 
-{% block main -%}
-  {{ super() }}
-  <div id="main-poll-container">
-    <div id="container">
-      <div class="poll-container" id="most-popular-poll-container">
-        <h2>Most popular polls</h2>
-        {% if most_popular_polls %}
+{% block main %}
+    {{ super() -}}
+    <div id="main-poll-container">
+      <div id="container">
+        <div class="poll-container" id="most-popular-poll-container">
+          <h2>Most popular polls</h2>
+          {% if most_popular_polls -%}
           <ul class="polls">
-          {% for poll in most_popular_polls %}
+          {%- for poll in most_popular_polls %}
             <li class="poll">
               <span class="title"><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></span>
-              {% set c = poll.get_vote_count() %}
+              {% set c = poll.get_vote_count() -%}
               <span class="vote-count">{{ c }} {{ 'Votes' if c > 1 else 'Vote' }}</span>
             </li>
-          {% endfor %}
+          {%- endfor %}
           </ul>
-        {% else %}
+          {%- else -%}
           <p>There are no polls yet.</p>
-        {% endif %}
-      </div>
-      <div class="poll-container" id="most-recent-poll-container">
-        <h2>Most recent polls</h2>
-        {% if most_recent_polls %}
+          {%- endif %}
+        </div>
+        <div class="poll-container" id="most-recent-poll-container">
+          <h2>Most recent polls</h2>
+          {% if most_recent_polls -%}
           <ul class="polls">
-          {% for poll in most_recent_polls %}
+          {%- for poll in most_recent_polls %}
             <li class="poll">
               <span class="title"><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></span>
               <span class="created">{{ poll.created.strftime('%Y-%m-%d %H:%M') }}</span>
             </li>
-          {% endfor %}
+          {%- endfor %}
           </ul>
-        {% else %}
+          {%- else -%}
           <p>There are no polls yet.</p>
-        {% endif %}
+          {%- endif %}
+        </div>
       </div>
+      <a id="create" class="blue-bg" href="{{ url_for('poll.create_poll') }}">Create a poll</a>
     </div>
-    <a id="create" class="blue-bg" href="{{ url_for('poll.create_poll') }}">Create a poll</a>
-  </div>
 {%- endblock %}
 
 {% block body %}
