@@ -20,40 +20,40 @@
 {% endblock %}
 
 {% block main %}
-  {{ super() }}
-  <div id="my-polls" class="polls">
-    <h2>Your polls</h2>
+    {{ super() -}}
+    <div id="my-polls" class="polls">
+      <h2>Your polls</h2>
       {% if polls -%}
-        <table>
-          <tr>
-            <th>Title</th>
-            <th>Votes</th>
-            <th>Created</th>
-            <th>Your vote(s)</th>
-          </tr>
-          {%- for poll in polls %}
-            <tr>
-              <td>
-                <a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a>
-              </td>
-              <td class="vote">
-                {{ poll.get_vote_count() }}
-              </td>
-              <td class="created">
-                {{ poll.created.strftime("%Y-%m-%d %H:%M") }}
-              </td>
-              <td>
-                <ul class="votes">
-                  {% for vote in poll.get_votes_of(current_user) %}
-                      <li>{{ vote.text }}</li>
-                  {% endfor %}
-                </ul>
-              </td>
-            </tr>
-          {%- endfor %}
-        </table>
+      <table>
+        <tr>
+          <th>Title</th>
+          <th>Votes</th>
+          <th>Created</th>
+          <th>Your vote(s)</th>
+        </tr>
+        {%- for poll in polls %}
+        <tr>
+          <td>
+            <a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a>
+          </td>
+          <td class="vote">
+            {{ poll.get_vote_count() }}
+          </td>
+          <td class="created">
+            {{ poll.created.strftime("%Y-%m-%d %H:%M") }}
+          </td>
+          <td>
+            <ul class="votes">
+              {%- for vote in poll.get_votes_of(current_user) %}
+              <li>{{ vote.text }}</li>
+              {%- endfor %}
+            </ul>
+          </td>
+        </tr>
+        {%- endfor %}
+      </table>
       {%- else -%}
-        <p>You haven't created any polls.</p>
+      <p>You haven't created any polls.</p>
       {%- endif %}
-  </div>
-{% endblock %}
+    </div>
+{%- endblock %}
