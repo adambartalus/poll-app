@@ -2,6 +2,7 @@ import pytest
 from urllib.parse import urlparse
 
 from poll.models import Poll, PollTitle
+from poll.utils import add_poll
 
 
 def test_index(client, auth):
@@ -20,6 +21,12 @@ def test_index(client, auth):
 def test_login_required(client, path):
     response = client.post(path)
     assert urlparse(response.headers["Location"]).path == "/login"
+
+
+def test_poll_redirect(client):
+    response = client.get('/poll')
+    assert response.status_code == 302
+    assert urlparse(response.headers['Location']).path == '/poll/create'
 
 
 def test_create_poll(client, app):
@@ -99,3 +106,32 @@ def test_vote_poll(auth, client, app):
         follow_redirects=True
     )
     assert b'You have successfully voted on this poll' in response.data
+    response = client.post(
+        '/poll/1',
+        data={
+            'choice': '1'
+        }
+    )
+    assert response.status_code == 302
+    assert urlparse(response.headers['Location']).path == '/poll/1'
+    response = client.get('/poll/1')
+    assert b'You have already voted on this poll' in response.data
+
+
+def test_vote_no_selected_option(auth, client, app):
+    add_poll(app, 'test-title', ['1', '4', '9'], False)
+    auth.login()
+    response = client.post(
+        '/poll/1',
+        data={}
+    )
+    assert response.status_code == 302
+    assert urlparse(response.headers['Location']).path == '/poll/1'
+    response = client.get('/poll/1')
+    assert b'You have to select at least one option' in response.data
+
+
+def test_poll_not_exists(client):
+    response = client.get('/poll/1')
+    assert response.status_code == 302
+    assert urlparse(response.headers['Location']).path == '/'

@@ -1,5 +1,5 @@
 from flask import current_app
-from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
+from itsdangerous import URLSafeTimedSerializer, BadSignature
 
 
 def generate_token(email, salt):
@@ -16,7 +16,5 @@ def confirm_token(token, salt, expiration=3600):
             max_age=expiration
         )
     except BadSignature:
-        return False
-    except SignatureExpired:
         return False
     return email

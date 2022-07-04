@@ -33,6 +33,7 @@ def test_voted_polls(client, app, auth):
     )
     response = client.get('/user/voted-polls')
     assert b"test-title" in response.data
+    assert b'<li>1</li>' in response.data
 
 
 def test_no_my_polls(client, auth):

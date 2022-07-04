@@ -114,7 +114,7 @@ def password_reset_email():
     if form.validate_on_submit():
         email = form.email.data
         try:
-            user = User.query.filter_by(email=email).first_or_404()
+            User.query.filter_by(email=email).first_or_404()
             send_password_reset_email(email)
             flash('A password reset link has been sent to your email', 'success')
             return redirect(url_for('auth.login'))

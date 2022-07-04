@@ -209,10 +209,10 @@ def test_confirm_token_expired(auth, client, app):
     with app.app_context():
         user = User.query.filter_by(username='b').first()
         assert not user.confirmed
-        token = generate_token(test_email, '')
+        token = generate_token(test_email, current_app.config['SECURITY_PASSWORD_SALT'])
 
         sleep(5)
-        assert not confirm_token(token, '', 4)
+        assert not confirm_token(token, current_app.config['SECURITY_PASSWORD_SALT'], 3)
 
 
 def test_reset_password_email_form(client):
