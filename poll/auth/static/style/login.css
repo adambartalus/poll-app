@@ -1,10 +1,13 @@
 h2 {
   text-align: center;
 }
-#register, #forgot-pw {
+#register-acc {
+  margin-top: 15px;
+}
+#register-acc, #forgot-pw {
   color: white;
   text-align: center;
 }
-#register a, #forgot-pw a {
+#register-acc a, #forgot-pw a {
   color: white;
 }

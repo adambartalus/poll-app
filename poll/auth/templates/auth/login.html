@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
+{%- block title -%}Login{%- endblock -%}
+
 {% block head %}
   {{ super() }}
 {% endblock %}
-
-{%- block title -%}Login{%- endblock -%}
 
 {% block links %}
   {{ super() }}
@@ -24,13 +24,17 @@
   {{ super() }}
   <form action="{{ url_for('auth.login') }}" method="post" novalidate>
     {{ form.csrf_token }}
-    {{ form.username.label }} <br>
-    {{ form.username }} <br>
-    {{ form.password.label }} <br>
-    {{ form.password }} <br>
+    <div>
+      {{ form.username.label }} <br>
+      {{ form.username }} <br>
+    </div>
+    <div>
+      {{ form.password.label }} <br>
+      {{ form.password }} <br>
+    </div>
     {{ form.submit }}
     <input type="hidden" name="next" value="{{ next if next else '' }}">
-    <div id="register">
+    <div id="register-acc">
       Don't have an account yet? <a href="{{ url_for('auth.register') }}">Register.</a>
     </div>
     <div id="forgot-pw">

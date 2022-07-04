@@ -17,7 +17,8 @@
     <div id="container">
       <div class="poll-container" id="most-popular-poll-container">
         <h2>Most popular polls</h2>
-        <ul class="polls">
+        {% if most_popular_polls %}
+          <ul class="polls">
           {% for poll in most_popular_polls %}
             <li class="poll">
               <span class="title"><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></span>
@@ -25,18 +26,25 @@
               <span class="vote-count">{{ c }} {{ 'Votes' if c > 1 else 'Vote' }}</span>
             </li>
           {% endfor %}
-        </ul>
+          </ul>
+        {% else %}
+          <p>There are no polls yet.</p>
+        {% endif %}
       </div>
       <div class="poll-container" id="most-recent-poll-container">
         <h2>Most recent polls</h2>
-        <ul class="polls">
+        {% if most_recent_polls %}
+          <ul class="polls">
           {% for poll in most_recent_polls %}
             <li class="poll">
               <span class="title"><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></span>
               <span class="created">{{ poll.created.strftime('%Y-%m-%d %H:%M') }}</span>
             </li>
           {% endfor %}
-        </ul>
+          </ul>
+        {% else %}
+          <p>There are no polls yet.</p>
+        {% endif %}
       </div>
     </div>
     <a id="create" class="blue-bg" href="{{ url_for('poll.create_poll') }}">Create a poll</a>

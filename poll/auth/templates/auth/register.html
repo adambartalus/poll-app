@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{%- block title -%}Register{%- endblock -%}
+
 {% block head %}
   {{ super() }}
 {% endblock %}
@@ -8,8 +10,6 @@
   {{ super() }}
   <link rel="stylesheet" href="{{ url_for('auth.static', filename='style/register.css') }}">
 {%- endblock %}
-
-{%- block title -%}Register{%- endblock -%}
 
 {% block body %}
   {{ super() }}

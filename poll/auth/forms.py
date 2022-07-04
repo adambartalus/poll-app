@@ -31,7 +31,13 @@ class LoginForm(FlaskForm):
 
 
 class PasswordResetEmailForm(FlaskForm):
-    email = EmailField('Email')
+    email = EmailField(
+        'Email',
+        validators=[
+            DataRequired(message='You have to provide an email'),
+            Email()
+        ]
+    )
     submit = SubmitField('Send email')
 
 
