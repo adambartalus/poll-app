@@ -9,6 +9,7 @@ class Config:
     SECRET_KEY = 'default'
     WTF_CSRF_SECRET_KEY = 'def'
     SECURITY_PASSWORD_SALT = environ.get('SECURITY_PASSWORD_SALT')
+    PASSWORD_RESET_SALT = environ.get('PASSWORD_RESET_SALT')
     STATIC_FOLDER = 'static'
     TEMPLATES_FOLDER = 'templates'
     SQLALCHEMY_DATABASE_URI = 'sqlite:///../instance/poll.sqlite'

@@ -48,7 +48,10 @@
       {% if messages %}
         <ul class="flash-messages">
           {% for category, message in messages %}
-            <li class="flash-message {{ category }}">{{ message }}</li>
+            <li class="flash-message {{ category }}">
+              {{ message }}
+              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            </li>
           {% endfor %}
         </ul>
       {% endif %}

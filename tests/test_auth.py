@@ -1,13 +1,14 @@
 from datetime import datetime
 from time import sleep
 
+from flask import current_app
 from flask_login import current_user
 import pytest
 from urllib.parse import urlparse
 
 from werkzeug.security import check_password_hash
 
-from poll.token import generate_confirmation_token, confirm_token
+from poll.token import generate_token, confirm_token
 from poll.models import User
 
 
@@ -153,7 +154,7 @@ def test_confirm_token(auth, client, app):
     with app.app_context():
         user = User.query.filter_by(username='b').first()
         assert not user.confirmed
-        token = generate_confirmation_token(test_email)
+        token = generate_token(test_email, current_app.config['SECURITY_PASSWORD_SALT'])
     response = client.get(
         f'/confirm/{token}'
     )
@@ -208,7 +209,7 @@ def test_confirm_token_expired(auth, client, app):
     with app.app_context():
         user = User.query.filter_by(username='b').first()
         assert not user.confirmed
-        token = generate_confirmation_token(test_email)
+        token = generate_token(test_email, '')
 
         sleep(5)
-        assert not confirm_token(token, 4)
+        assert not confirm_token(token, '', 4)

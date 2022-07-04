@@ -1,15 +1,16 @@
 from datetime import datetime
 
-from flask import redirect, render_template, url_for, flash, request, abort
+from flask import redirect, render_template, url_for, flash, request, abort, current_app
 from flask_login import login_required, login_user, logout_user, current_user
+from werkzeug.exceptions import NotFound
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from poll.auth.forms import RegisterForm, LoginForm
-from poll.email import send_email
+from poll.auth.forms import RegisterForm, LoginForm, PasswordResetEmailForm, PasswordResetForm
+from poll.email import send_email, send_password_reset_email
 from poll.extensions import db
 from poll.models import User
 from poll.safe_redirect import is_safe_url
-from poll.token import generate_confirmation_token, confirm_token
+from poll.token import generate_token, confirm_token
 
 
 def register():
@@ -25,7 +26,7 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        token = generate_confirmation_token(user.email)
+        token = generate_token(user.email, current_app.config['SECURITY_PASSWORD_SALT'])
         confirm_url = url_for('auth.confirm_email', token=token, _external=True)
         html = render_template('auth/activate.html', confirm_url=confirm_url, username=username)
         subject = "Please confirm your email"
@@ -66,13 +67,13 @@ def logout():
 
 @login_required
 def confirm_email(token):
-    email = confirm_token(token)
+    email = confirm_token(token, current_app.config['SECURITY_PASSWORD_SALT'])
     if not email:
         flash('The confirmation link is invalid or has expired.', 'error')
         return redirect(url_for('main.index'))
     user = User.query.filter_by(email=email).first_or_404()
     if user.id != current_user.id:
-        flash('Wrong account')
+        flash('Wrong account', 'error')
         return redirect(url_for('main.index'))
     if user.confirmed:
         flash('Account already confirmed. Please log in.', 'success')
@@ -83,3 +84,41 @@ def confirm_email(token):
         db.session.commit()
         flash('You have confirmed your account. Thanks!', 'success')
     return redirect(url_for('main.index'))
+
+
+def reset_password(token):
+    email = confirm_token(token, current_app.config['PASSWORD_RESET_SALT'], 600)
+    if not email:
+        flash('The password reset link is invalid or has expired.', 'error')
+        return redirect(url_for('auth.login'))
+    try:
+        user = User.query.filter_by(email=email).first_or_404()
+    except NotFound:
+        flash('Invalid email address!', 'error')
+        return redirect(url_for('auth.login'))
+
+    form = PasswordResetForm()
+    if form.validate_on_submit():
+        user.password_hash = generate_password_hash(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Your password has been changed!', 'success')
+
+        return redirect(url_for('auth.login'))
+
+    return render_template('auth/reset_password.html', form=form, token=token)
+
+
+def password_reset_email():
+    form = PasswordResetEmailForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        try:
+            user = User.query.filter_by(email=email).first_or_404()
+            send_password_reset_email(email)
+            flash('A password reset link has been sent to your email', 'success')
+            return redirect(url_for('auth.login'))
+        except NotFound:
+            flash('There is no account with this email', 'warning')
+
+    return render_template('auth/password_reset_email.html', form=form)
