@@ -18,7 +18,7 @@ def test_register(client, app):
         '/register',
         data={
             'username': 'a',
-            'email': 'test@test.com',
+            'email': 'test@test2.com',
             'password': '12345678',
             'confirm_password': '12345678'
         }
@@ -28,7 +28,7 @@ def test_register(client, app):
     with app.app_context():
         user = User.query.filter_by(username='a').first()
         assert user.username == 'a'
-        assert user.email == 'test@test.com'
+        assert user.email == 'test@test2.com'
         assert not user.confirmed
         assert not user.confirmation_date
         assert (datetime.now() - user.registration_date).total_seconds() < 10
@@ -213,3 +213,68 @@ def test_confirm_token_expired(auth, client, app):
 
         sleep(5)
         assert not confirm_token(token, '', 4)
+
+
+def test_reset_password_email_form(client):
+    assert client.get('/reset-password').status_code == 200
+    response = client.post(
+        '/reset-password',
+        data={
+            'email': 'invalid@asd.com'
+        }
+    )
+    assert b'There is no account with this email' in response.data
+
+    response = client.post(
+        '/reset-password',
+        data={
+            'email': 'test@test.com'
+        }
+    )
+    assert response.status_code == 302
+    assert urlparse(response.headers['Location']).path == '/login'
+
+    response = client.get('/login')
+
+    assert b'A password reset link has been sent to your email' in response.data
+
+
+def test_reset_password(client, app):
+    # invalid token
+    response = client.get('/reset-password/random')
+    assert response.status_code == 302
+    assert urlparse(response.headers['Location']).path == '/login'
+    response = client.get('/login')
+    assert b'The password reset link is invalid or has expired.' in response.data
+    # valid token invalid email
+    with app.app_context():
+        token = generate_token('test@invalid.com', current_app.config['PASSWORD_RESET_SALT'])
+        response = client.get(
+            f'/reset-password/{token}'
+        )
+        assert response.status_code == 302
+        assert urlparse(response.headers['Location']).path == '/login'
+        response = client.get('/login')
+        assert b'Invalid email address!' in response.data
+    # valid token
+    with app.app_context():
+        token = generate_token('test@test.com', current_app.config['PASSWORD_RESET_SALT'])
+        response = client.get(
+            f'/reset-password/{token}'
+        )
+        assert response.status_code == 200
+
+        response = client.post(
+            f'/reset-password/{token}',
+            data={
+                'password': 'newpassword',
+                'confirm_password': 'newpassword'
+            }
+        )
+        assert response.status_code == 302
+        assert urlparse(response.headers['Location']).path == '/login'
+        response = client.get('/login')
+        assert b'Your password has been changed!' in response.data
+
+        user = User.query.filter_by(email='test@test.com').first()
+        assert check_password_hash(user.password_hash, 'newpassword')

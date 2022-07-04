@@ -12,7 +12,7 @@ def app():
     with app.app_context():
         db.drop_all()
         db.create_all()
-        db.session.add(User('test', 'test@test.test', generate_password_hash('test')))
+        db.session.add(User('test', 'test@test.com', generate_password_hash('test')))
         db.session.commit()
     yield app
 
