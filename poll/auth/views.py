@@ -2,15 +2,17 @@ from datetime import datetime
 
 from flask import redirect, render_template, url_for, flash, request, abort, current_app
 from flask_login import login_required, login_user, logout_user, current_user
+from itsdangerous import BadSignature, SignatureExpired
 from werkzeug.exceptions import NotFound
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from poll.auth.forms import RegisterForm, LoginForm, PasswordResetEmailForm, PasswordResetForm
-from poll.email import send_email, send_password_reset_email
+from poll.email import send_password_reset_email, send_confirmation_email
 from poll.extensions import db
 from poll.models import User
 from poll.safe_redirect import is_safe_url
-from poll.token import generate_token, confirm_token
+from poll.token import confirm_token
+from poll.utils import custom_login_message
 
 
 def register():
@@ -26,11 +28,7 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        token = generate_token(user.email, current_app.config['SECURITY_PASSWORD_SALT'])
-        confirm_url = url_for('auth.confirm_email', token=token, _external=True)
-        html = render_template('auth/activate.html', confirm_url=confirm_url, username=username)
-        subject = "Please confirm your email"
-        send_email(user.email, subject, html)
+        send_confirmation_email(user.email, user.username)
 
         return redirect(url_for('auth.login'))
     # GET
@@ -65,13 +63,21 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
+@custom_login_message(message='Log in to finish email verification', category='info')
 @login_required
 def confirm_email(token):
-    email = confirm_token(token, current_app.config['SECURITY_PASSWORD_SALT'])
-    if not email:
+    try:
+        email = confirm_token(token, current_app.config['SECURITY_PASSWORD_SALT'])
+    except (BadSignature, SignatureExpired):
         flash('The confirmation link is invalid or has expired.', 'error')
         return redirect(url_for('main.index'))
-    user = User.query.filter_by(email=email).first_or_404()
+
+    try:
+        user = User.query.filter_by(email=email).first_or_404()
+    except NotFound:
+        flash(f'There is no account with the email {email}', 'error')
+        return redirect(url_for('main.index'))
+
     if user.id != current_user.id:
         flash('Wrong account', 'error')
         return redirect(url_for('main.index'))
@@ -83,14 +89,16 @@ def confirm_email(token):
         db.session.add(user)
         db.session.commit()
         flash('You have confirmed your account. Thanks!', 'success')
-    return redirect(url_for('main.index'))
+    return redirect(url_for('auth.login'))
 
 
 def reset_password(token):
-    email = confirm_token(token, current_app.config['PASSWORD_RESET_SALT'], 600)
-    if not email:
+    try:
+        email = confirm_token(token, current_app.config['PASSWORD_RESET_SALT'], 600)
+    except (BadSignature, SignatureExpired):
         flash('The password reset link is invalid or has expired.', 'error')
         return redirect(url_for('auth.login'))
+
     try:
         user = User.query.filter_by(email=email).first_or_404()
     except NotFound:
@@ -102,6 +110,7 @@ def reset_password(token):
         user.password_hash = generate_password_hash(form.password.data)
         db.session.add(user)
         db.session.commit()
+
         flash('Your password has been changed!', 'success')
 
         return redirect(url_for('auth.login'))

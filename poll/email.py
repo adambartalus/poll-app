@@ -37,3 +37,12 @@ def send_password_reset_email(email):
     subject = 'Password Reset'
 
     send_email(email, subject, html)
+
+
+def send_confirmation_email(email, username=''):
+    token = generate_token(email, current_app.config['SECURITY_PASSWORD_SALT'])
+    confirm_url = url_for('auth.confirm_email', token=token, _external=True)
+    html = render_template('auth/activate.html', confirm_url=confirm_url, username=username)
+    subject = "Please confirm your email"
+
+    send_email(email, subject, html)

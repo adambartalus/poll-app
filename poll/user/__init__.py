@@ -10,5 +10,5 @@ bp = Blueprint(
     url_prefix='/user'
 )
 
-bp.add_url_rule('voted-polls', view_func=views.voted_polls)
-bp.add_url_rule('my-polls', view_func=views.my_polls)
+bp.add_url_rule('/voted-polls', view_func=views.voted_polls)
+bp.add_url_rule('/my-polls', view_func=views.my_polls)

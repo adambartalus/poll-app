@@ -145,6 +145,9 @@ form div {
 .success {
   background-color: #9cfa98;
 }
+.info {
+  background-color: #2196F3;
+}
 .flash-messages {
   margin: 0;
   padding: 0;

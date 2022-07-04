@@ -6,6 +6,7 @@ from flask_login import current_user
 import pytest
 from urllib.parse import urlparse
 
+from itsdangerous import SignatureExpired
 from werkzeug.security import check_password_hash
 
 from poll.token import generate_token, confirm_token
@@ -212,7 +213,8 @@ def test_confirm_token_expired(auth, client, app):
         token = generate_token(test_email, current_app.config['SECURITY_PASSWORD_SALT'])
 
         sleep(5)
-        assert not confirm_token(token, current_app.config['SECURITY_PASSWORD_SALT'], 3)
+        with pytest.raises(SignatureExpired):
+            confirm_token(token, current_app.config['SECURITY_PASSWORD_SALT'], 4)
 
 
 def test_reset_password_email_form(client):

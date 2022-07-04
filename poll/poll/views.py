@@ -18,6 +18,7 @@ def vote_poll(id_):
     if current_user.voted_on(id_):
         flash('You have already voted on this poll', 'error')
         return redirect(url_for('poll.get_poll', id_=id_))
+
     choices = request.form.getlist('choice')
     if choices:
         if (not Poll.query.get(id_).multiple) and len(choices) > 1:
@@ -27,8 +28,10 @@ def vote_poll(id_):
                 db.session.add(PollVote(poll_option_id=choice, user_id=current_user.id))
             db.session.commit()
             flash('You have successfully voted on this poll', 'success')
+
         return redirect(url_for('poll.get_poll', id_=id_))
     flash('You have to select at least one option', 'error')
+
     return redirect(url_for('poll.get_poll', id_=id_))
 
 
@@ -49,6 +52,7 @@ def get_poll(id_):
         'options': options,
         'multiple': multiple
     }
+
     return render_template('poll/poll.html', **context)
 
 
@@ -69,4 +73,5 @@ def create_poll():
         id_ = add_poll(current_app, title, options, multiple)
 
         return redirect(url_for('poll.get_poll', id_=id_))
+
     return render_template('poll/create_poll.html', form=form)
