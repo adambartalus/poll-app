@@ -21,7 +21,9 @@ def custom_login_message(message=None, category=None):
             basic_message_category = login_manager.login_message_category
             login_manager.login_message = message or basic_message
             login_manager.login_message_category = category or basic_message_category
+
             to_return = func(*args, **kwargs)
+
             login_manager.login_message = basic_message
             login_manager.login_message_category = basic_message_category
             return to_return

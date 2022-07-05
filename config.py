@@ -21,7 +21,7 @@ class Config:
     MAIL_USE_SSL = True
     MAIL_USERNAME = environ.get("APP_MAIL_USERNAME")
     MAIL_PASSWORD = environ.get("APP_MAIL_PASSWORD")
-    MAIL_DEFAULT_SENDER = 'badam.flask@gmail.com'
+    MAIL_DEFAULT_SENDER = environ.get("APP_MAIL_DEFAULT_SENDER")
 
     TESTING = False
 
