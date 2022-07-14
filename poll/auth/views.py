@@ -29,6 +29,7 @@ def register():
         db.session.commit()
 
         send_confirmation_email(user.email, user.username)
+        flash('Confirm your account via the link sent to your email account', 'success')
 
         return redirect(url_for('auth.login'))
     # GET

@@ -2,6 +2,7 @@ h2 {
   color: white;
   border-bottom: 2px solid white;
   word-break: break-all;
+  text-align: left;
 }
 #result {
   background-color: #FFBF00;

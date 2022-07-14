@@ -27,7 +27,8 @@
       <ul>
         {%- for option in options %}
         <li>
-          <input {{ 'checked' if option.has_voted_on(current_user) else '' }} type="{{ 'checkbox' if multiple else 'radio' }}" id="option-{{ loop.index }}" name="choice" value="{{ option.id }}">
+          <input type="{{ 'checkbox' if multiple else 'radio' }}" id="option-{{ loop.index }}" name="choice" value="{{ option.id }}"
+          {{ 'checked' if (current_user.is_authenticated and option.has_voted_on(current_user)) else '' }} >
           <label for="option-{{ loop.index }}">{{ option.text }}</label>
         </li>
         {%- endfor %}

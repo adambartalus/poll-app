@@ -12,6 +12,7 @@ h1 a {
 }
 h2 {
   color: white;
+  text-align: center;
 }
 header {
   background-color: #999999;
@@ -108,12 +109,17 @@ form div {
   white-space: nowrap;
 }
 .dropbtn {
+  display: block;
   background-color: #123456;
+  border-radius: 50%;
+  padding: 0;
   color: white;
-  padding: 5px;
-  font-size: 16px;
   border: none;
   cursor: pointer;
+}
+.dropbtn span {
+  font-size: 48px;
+  vertical-align: bottom;
 }
 
 .dropdown-content a {
@@ -184,11 +190,6 @@ form div {
   color: black;
 }
 /* ids */
-#user-btn {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
 #answer_options {
   margin: 0;
   padding-left: 0;

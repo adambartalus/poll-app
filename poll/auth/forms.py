@@ -27,7 +27,7 @@ class RegisterForm(FlaskForm):
 class LoginForm(FlaskForm):
     username = StringField('Username')
     password = PasswordField('Password')
-    submit = SubmitField('Login')
+    submit = SubmitField('Log in')
 
 
 class PasswordResetEmailForm(FlaskForm):

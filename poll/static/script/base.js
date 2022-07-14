@@ -4,13 +4,13 @@ if(user_btn) {
 }
 function myFunction(e) {
     user_dropdown = document.querySelector("#user-dropdown");
-    console.log(user_dropdown.classList);
     user_dropdown.classList.add('show')
 }
 
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
+  target = event.target.closest('.dropdown')
+  if (!target) {
     var dropdowns = document.getElementsByClassName("dropdown-content");
     var i;
     for (i = 0; i < dropdowns.length; i++) {

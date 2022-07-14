@@ -20,7 +20,9 @@
       <h1><a href="{{ url_for('main.index') }}">Poll</a></h1>
       {% if current_user.is_authenticated -%}
       <div class="dropdown" id="user-menu">
-        <button id="user-btn" class="dropbtn">User</button>
+        <button id="user-btn" class="dropbtn">
+          <span class="material-icons">account_circle</span>
+        </button>
         <div id="user-dropdown" class="dropdown-content">
           <span><a href="{{ url_for('user.my_polls') }}">My polls</a></span>
           <span><a href="{{ url_for('user.voted_polls') }}">Voted polls</a></span>

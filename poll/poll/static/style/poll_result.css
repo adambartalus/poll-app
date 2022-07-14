@@ -12,6 +12,7 @@
   color: black;
   margin: 0;
   word-break: break-word;
+  text-align: left;
 }
 .options {
   margin: 0;

@@ -37,6 +37,8 @@
 .vote-count {
   white-space: nowrap;
 }
+.vote-count span {
+}
 .created, .vote-count {
   display: block;
   margin-top: 10px;
@@ -75,6 +77,9 @@
   #main-poll-container {
     margin-left: 12%;
     margin-right: 12%;
+  }
+  .vote-count {
+    margin-top: 0;
   }
   #most-popular-poll-container .poll {
     display: flex;
