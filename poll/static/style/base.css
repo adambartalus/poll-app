@@ -139,14 +139,32 @@ form div {
 .error, .danger {
   background-color: #f56c6c;
 }
+.error .text:before, .danger .text:before {
+  font-family: Material Icons;
+  content: "\e000";
+  font-size: 24px;
+  vertical-align: bottom;
+}
 .warning {
   background-color: #eed202;
+}
+.warning .text:before {
+  font-family: Material Icons;
+  content: "\e002";
+  font-size: 24px;
+  vertical-align: bottom;
 }
 .success {
   background-color: #9cfa98;
 }
 .info {
   background-color: #2196F3;
+}
+.info .text:before {
+  font-family: Material Icons;
+  font-size: 24px;
+  content: "\e88e";
+  vertical-align: bottom;
 }
 .flash-messages {
   margin: 0;

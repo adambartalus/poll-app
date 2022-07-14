@@ -11,15 +11,26 @@
   border-bottom: 2px solid black;
   color: black;
   margin: 0;
+  word-break: break-word;
 }
 .options {
   margin: 0;
   padding: 0;
 }
 .option {
+  display: flex;
+  justify-content: space-between;
   margin: 0;
   padding: 10px 0;
   border-bottom: 1px solid black;
+}
+.option-text {
+  word-break: break-word;
+  padding-right: 5px;
+}
+.vote-count {
+  white-space: nowrap;
+  padding-left: 5px;
 }
 .option:last-child {
   border-bottom: none;
@@ -36,9 +47,8 @@ footer {
   float: right;
 }
 #vote {
-  position: absolute;
-  top: 5px;
-  right: 5px;
+  display: block;
+  text-align: center;
   color: white;
   text-decoration: none;
   border-radius: inherit;

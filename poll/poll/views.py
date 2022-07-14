@@ -44,7 +44,9 @@ def get_poll(id_):
     options = poll_.options
     multiple = poll_.multiple
 
-    options = map(lambda x: {'id': x.id, 'text': x.text}, options)
+    if current_user.is_authenticated and current_user.voted_on(id_):
+        if request.referrer != url_for('poll.get_poll', id_=id_, _external=True):
+            flash('You have already voted on this poll', 'info')
 
     context = {
         'poll_id': id_,

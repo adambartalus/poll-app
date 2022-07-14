@@ -19,11 +19,10 @@
     {{ super() -}}
     <div class="result">
       <h2>{{ poll.title.text }}</h2>
-      <a href="{{ url_for('poll.get_poll', id_=poll.id) }}" id="vote" class="blue-bg">Back to vote</a>
       <ul class="options">
       {%- for option in poll.options %}
         <li class="option">
-          <span>{{ option.text }}</span>
+          <span class="option-text">{{ option.text }}</span>
           {% set c = option.get_vote_count() -%}
           <span class="vote-count">{{ c }} {{ 'Votes' if c > 1 else 'Vote' }}</span>
         </li>
@@ -32,8 +31,9 @@
       <footer>
         <span class="created">Created {{ poll.created.strftime('%Y-%m-%d %H:%M') }}</span>
         {% set c = poll.get_vote_count() -%}
-        <span class="vote-count">{{ c }} {{ 'Votes' if c > 1 else 'Vote' }}</span>
+        <span id="total-vote-count" class="vote-count">{{ c }} {{ 'Votes' if c > 1 else 'Vote' }}</span>
       </footer>
+      <a href="{{ url_for('poll.get_poll', id_=poll.id) }}" id="vote" class="blue-bg">Back to vote</a>
     </div>
 {%- endblock %}
 

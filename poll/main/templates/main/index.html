@@ -21,9 +21,9 @@
           <ul class="polls">
           {%- for poll in most_popular_polls %}
             <li class="poll">
-              <span class="title"><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></span>
+              <div class="title"><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></div>
               {% set c = poll.get_vote_count() -%}
-              <span class="vote-count">{{ c }} {{ 'Votes' if c > 1 else 'Vote' }}</span>
+              <div class="vote-count">{{ c }} {{ 'Votes' if c > 1 else 'Vote' }}</div>
             </li>
           {%- endfor %}
           </ul>
@@ -37,8 +37,8 @@
           <ul class="polls">
           {%- for poll in most_recent_polls %}
             <li class="poll">
-              <span class="title"><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></span>
-              <span class="created">{{ poll.created.strftime('%Y-%m-%d %H:%M') }}</span>
+              <div class="title"><a href="{{ url_for('poll.get_poll', id_=poll.id) }}">{{ poll.title.text }}</a></div>
+              <div class="created">{{ poll.created.strftime('%Y-%m-%d %H:%M') }}</div>
             </li>
           {%- endfor %}
           </ul>
